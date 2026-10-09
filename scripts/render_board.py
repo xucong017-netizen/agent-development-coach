@@ -72,6 +72,8 @@ def validate(data):
                 raise ValueError('Artifact verification must be an object')
     if data.get('current_module') not in ids:
         raise ValueError('current_module is not a module ID')
+    expected = {'goal','io','model','prompt','tools','knowledge','memory','state','nodes','edges','routing','loops','control','evaluation','delivery'}
+    if ids != expected: raise ValueError('Keep the original 15 component IDs')
     agent_ids = validate_graph(data.get('agent_graph', {}))
     for t in data.get('trace', []):
         if not isinstance(t, dict) or t.get('node') not in agent_ids:
@@ -81,6 +83,39 @@ def validate(data):
     if not isinstance(data.get('file_catalog', []), list) or any(
             not isinstance(f, dict) for f in data.get('file_catalog', [])):
         raise ValueError('file_catalog must contain file objects')
+    if 'design' in data:
+        design = data['design']
+        if not isinstance(design, dict) or not isinstance(design.get('component_decisions'), dict) or not isinstance(design.get('system'), dict):
+            raise ValueError('design needs component_decisions and system objects')
+        validate_graph(design.get('graph', {}))
+        c = design.get('contracts', {})
+        if not isinstance(c, dict): raise ValueError('contracts must be an object')
+        for key in ('inputs', 'outputs', 'tests'):
+            if not isinstance(c.get(key, []), list): raise ValueError(key + ' must be a list')
+        for key in ('state_fields', 'nodes', 'tools', 'routes', 'loop_limits'):
+            if not isinstance(c.get(key, {}), dict): raise ValueError(key + ' must be an object')
+        if any(not isinstance(v, dict) for k in ('nodes', 'tools', 'loop_limits') for v in c.get(k, {}).values()):
+            raise ValueError('Node/tool/loop contracts need object values')
+        if any(not isinstance(v, list) or any(not isinstance(r, dict) for r in v) for v in c.get('routes', {}).values()):
+            raise ValueError('Route contracts need lists of rule objects')
+        if any(not isinstance(t, dict) for t in c.get('tests', [])): raise ValueError('tests need case objects')
+        if any(not isinstance(v, dict) or v.get('type') not in ('string','integer','number','boolean','list','dict','any') for v in c.get('state_fields', {}).values()):
+            raise ValueError('State fields need a supported type: string/integer/number/boolean/list/dict/any')
+        if any(not isinstance(v, str) for v in c.get('inputs', []) + c.get('outputs', [])):
+            raise ValueError('input/output field names must be strings')
+        for spec in c.get('nodes', {}).values():
+            if any(k in spec and not isinstance(spec[k], str) for k in ('source', 'function')): raise ValueError('Node source/function must be strings')
+            if any(not isinstance(spec.get(k, []), list) or any(not isinstance(f, str) for f in spec.get(k, [])) for k in ('reads', 'writes')):
+                raise ValueError('Node reads/writes need field-name lists')
+        for rules in c.get('routes', {}).values():
+            for rule in rules:
+                if any(k in rule and not isinstance(rule[k], str) for k in ('field','op','to')): raise ValueError('Route field/op/to must be strings')
+        for guard in c.get('loop_limits', {}).values():
+            if any(k in guard and not isinstance(guard[k], str) for k in ('counter','exit')): raise ValueError('Loop counter/exit must be strings')
+    if data.get('design_status') == '设计完成':
+        from design_engine import audit
+        result = audit(data)
+        if not result['passed']: raise ValueError('设计完成验收未通过：' + result['issues'][0]['message'])
 
 
 def artifacts_html(module):

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "title": "课程咨询助手 · 课堂模拟示例",
+  "title": "课程咨询 · 动态智能体对比",
   "mode": "教师演示",
   "delivery": "设计与代码",
   "current_module": "tools",
@@ -1068,10 +1068,10 @@
             }
           ],
           "verification": {
-            "status": "真实框架已执行，模拟模型",
-            "command": "run_design.py --mode framework --question Python",
-            "expected": "validate → search → answer",
-            "actual": "实际执行 validate、search、answer；缺主题执行 validate、ask。源文件哈希与完整状态见 runs/trace。"
+            "status": "待运行",
+            "command": "运行与节点回放 → 框架模式",
+            "expected": "实际节点轨迹包含状态与源代码位置",
+            "actual": "以点击运行后保存的证据为准。"
           }
         }
       ],
@@ -1728,416 +1728,64 @@
       {
         "id": "START",
         "label": "开始",
+        "kind": "入口",
+        "x": 30,
+        "y": 30
+      },
+      {
+        "id": "model",
+        "label": "模型决定下一步",
+        "kind": "模型",
+        "x": 30,
+        "y": 180
+      },
+      {
+        "id": "tools",
+        "label": "执行模型选的工具",
+        "kind": "工具",
         "x": 330,
-        "y": 35,
-        "kind": "入口"
-      },
-      {
-        "id": "validate",
-        "label": "检查输入",
-        "x": 330,
-        "y": 175,
-        "kind": "规则"
-      },
-      {
-        "id": "ask",
-        "label": "追问学习主题",
-        "x": 35,
-        "y": 335,
-        "kind": "回应"
-      },
-      {
-        "id": "search",
-        "label": "查询课程目录",
-        "x": 330,
-        "y": 335,
-        "kind": "工具"
-      },
-      {
-        "id": "error",
-        "label": "说明查询错误",
-        "x": 35,
-        "y": 525,
-        "kind": "回应"
-      },
-      {
-        "id": "missing",
-        "label": "说明资料不足",
-        "x": 330,
-        "y": 525,
-        "kind": "回应"
-      },
-      {
-        "id": "answer",
-        "label": "生成带出处的回答",
-        "x": 625,
-        "y": 525,
-        "kind": "模型"
+        "y": 180
       },
       {
         "id": "END",
-        "label": "本轮结束",
-        "x": 330,
-        "y": 745,
-        "kind": "出口"
-      },
-      {
-        "id": "invalid",
-        "label": "输入类型错误",
-        "kind": "校验出口",
-        "x": 15,
-        "y": 175
-      },
-      {
-        "id": "outside",
-        "label": "任务超出范围",
-        "kind": "边界出口",
-        "x": 635,
-        "y": 175
+        "label": "结束",
+        "kind": "出口",
+        "x": 30,
+        "y": 360
       }
     ],
     "edges": [
       {
         "from": "START",
-        "to": "validate",
-        "label": "输入"
+        "to": "model",
+        "label": ""
       },
       {
-        "from": "validate",
-        "to": "ask",
-        "label": "缺主题"
+        "from": "model",
+        "to": "tools",
+        "label": "tool_calls 非空"
       },
       {
-        "from": "validate",
-        "to": "search",
-        "label": "完整"
+        "from": "tools",
+        "to": "model",
+        "label": "回填 ToolMessage"
       },
       {
-        "from": "search",
-        "to": "error",
-        "label": "error 非空"
-      },
-      {
-        "from": "search",
-        "to": "missing",
-        "label": "无资料"
-      },
-      {
-        "from": "search",
-        "to": "answer",
-        "label": "有资料"
-      },
-      {
-        "from": "ask",
+        "from": "model",
         "to": "END",
-        "label": "下轮重新输入"
-      },
-      {
-        "from": "error",
-        "to": "END",
-        "label": "失败结束"
-      },
-      {
-        "from": "missing",
-        "to": "END",
-        "label": "不足说明"
-      },
-      {
-        "from": "answer",
-        "to": "END",
-        "label": "完成"
-      },
-      {
-        "from": "validate",
-        "to": "invalid",
-        "label": "类型错误"
-      },
-      {
-        "from": "validate",
-        "to": "outside",
-        "label": "范围外"
-      },
-      {
-        "from": "invalid",
-        "to": "END",
-        "label": "结束"
-      },
-      {
-        "from": "outside",
-        "to": "END",
-        "label": "结束"
+        "label": "最终回答或次数上限"
       }
     ]
   },
   "trace_kind": "课堂模拟 · 非真实模型运行",
-  "trace": [
-    {
-      "run": "077840b7-7a47-4965-b4e2-58e987800e40",
-      "step": 1,
-      "node": "validate",
-      "mode": "framework",
-      "input": {
-        "question": "Python",
-        "topic": "",
-        "route": "",
-        "documents": [],
-        "source": "",
-        "error": "",
-        "answer": ""
-      },
-      "before": {
-        "question": "Python",
-        "topic": "",
-        "route": "",
-        "documents": [],
-        "source": "",
-        "error": "",
-        "answer": ""
-      },
-      "update": {
-        "topic": "Python",
-        "route": "search"
-      },
-      "after": {
-        "question": "Python",
-        "topic": "Python",
-        "route": "search",
-        "documents": [],
-        "source": "",
-        "error": "",
-        "answer": ""
-      },
-      "output": "",
-      "source": {
-        "path": "implementation/agent_nodes.py",
-        "function": "validate_request",
-        "line": 5
-      },
-      "duration_ms": 0.01,
-      "error": "",
-      "basis": "实际节点函数执行"
-    },
-    {
-      "run": "077840b7-7a47-4965-b4e2-58e987800e40",
-      "step": 2,
-      "node": "search",
-      "mode": "framework",
-      "input": {
-        "question": "Python",
-        "topic": "Python",
-        "route": "search",
-        "documents": [],
-        "source": "",
-        "error": "",
-        "answer": ""
-      },
-      "before": {
-        "question": "Python",
-        "topic": "Python",
-        "route": "search",
-        "documents": [],
-        "source": "",
-        "error": "",
-        "answer": ""
-      },
-      "update": {
-        "documents": [
-          {
-            "name": "Python 入门",
-            "topic": "Python",
-            "level": "零基础"
-          }
-        ],
-        "source": "课堂模拟目录 A（非真实课程）",
-        "error": ""
-      },
-      "after": {
-        "question": "Python",
-        "topic": "Python",
-        "route": "search",
-        "documents": [
-          {
-            "name": "Python 入门",
-            "topic": "Python",
-            "level": "零基础"
-          }
-        ],
-        "source": "课堂模拟目录 A（非真实课程）",
-        "error": "",
-        "answer": ""
-      },
-      "output": "",
-      "source": {
-        "path": "implementation/agent_nodes.py",
-        "function": "search_catalog",
-        "line": 18
-      },
-      "duration_ms": 0.13,
-      "error": "",
-      "basis": "实际节点函数执行"
-    },
-    {
-      "run": "077840b7-7a47-4965-b4e2-58e987800e40",
-      "step": 3,
-      "node": "answer",
-      "mode": "framework",
-      "input": {
-        "question": "Python",
-        "topic": "Python",
-        "route": "search",
-        "documents": [
-          {
-            "name": "Python 入门",
-            "topic": "Python",
-            "level": "零基础"
-          }
-        ],
-        "source": "课堂模拟目录 A（非真实课程）",
-        "error": "",
-        "answer": ""
-      },
-      "before": {
-        "question": "Python",
-        "topic": "Python",
-        "route": "search",
-        "documents": [
-          {
-            "name": "Python 入门",
-            "topic": "Python",
-            "level": "零基础"
-          }
-        ],
-        "source": "课堂模拟目录 A（非真实课程）",
-        "error": "",
-        "answer": ""
-      },
-      "update": {
-        "answer": "【模拟模型】找到课程：[{\"name\": \"Python 入门\", \"topic\": \"Python\", \"level\": \"零基础\"}]"
-      },
-      "after": {
-        "question": "Python",
-        "topic": "Python",
-        "route": "search",
-        "documents": [
-          {
-            "name": "Python 入门",
-            "topic": "Python",
-            "level": "零基础"
-          }
-        ],
-        "source": "课堂模拟目录 A（非真实课程）",
-        "error": "",
-        "answer": "【模拟模型】找到课程：[{\"name\": \"Python 入门\", \"topic\": \"Python\", \"level\": \"零基础\"}]"
-      },
-      "output": "【模拟模型】找到课程：[{\"name\": \"Python 入门\", \"topic\": \"Python\", \"level\": \"零基础\"}]",
-      "source": {
-        "path": "implementation/agent_nodes.py",
-        "function": "answer_courses",
-        "line": 26
-      },
-      "duration_ms": 0.02,
-      "error": "",
-      "basis": "实际节点函数执行"
-    },
-    {
-      "run": "e72b5580-22a4-48dc-92aa-bda4c2599b4c",
-      "step": 1,
-      "node": "validate",
-      "mode": "framework",
-      "input": {
-        "question": "",
-        "topic": "",
-        "route": "",
-        "documents": [],
-        "source": "",
-        "error": "",
-        "answer": ""
-      },
-      "before": {
-        "question": "",
-        "topic": "",
-        "route": "",
-        "documents": [],
-        "source": "",
-        "error": "",
-        "answer": ""
-      },
-      "update": {
-        "topic": "",
-        "route": "missing"
-      },
-      "after": {
-        "question": "",
-        "topic": "",
-        "route": "missing",
-        "documents": [],
-        "source": "",
-        "error": "",
-        "answer": ""
-      },
-      "output": "",
-      "source": {
-        "path": "implementation/agent_nodes.py",
-        "function": "validate_request",
-        "line": 5
-      },
-      "duration_ms": 0.01,
-      "error": "",
-      "basis": "实际节点函数执行"
-    },
-    {
-      "run": "e72b5580-22a4-48dc-92aa-bda4c2599b4c",
-      "step": 2,
-      "node": "ask",
-      "mode": "framework",
-      "input": {
-        "question": "",
-        "topic": "",
-        "route": "missing",
-        "documents": [],
-        "source": "",
-        "error": "",
-        "answer": ""
-      },
-      "before": {
-        "question": "",
-        "topic": "",
-        "route": "missing",
-        "documents": [],
-        "source": "",
-        "error": "",
-        "answer": ""
-      },
-      "update": {
-        "answer": "请告诉我你想学习的课程主题。"
-      },
-      "after": {
-        "question": "",
-        "topic": "",
-        "route": "missing",
-        "documents": [],
-        "source": "",
-        "error": "",
-        "answer": "请告诉我你想学习的课程主题。"
-      },
-      "output": "请告诉我你想学习的课程主题。",
-      "source": {
-        "path": "implementation/agent_nodes.py",
-        "function": "ask_topic",
-        "line": 14
-      },
-      "duration_ms": 0.01,
-      "error": "",
-      "basis": "实际节点函数执行"
-    }
-  ],
+  "trace": [],
   "open_questions": [
     "真实模型质量尚未测试。",
     "学员解释与结构验收等待课堂检查。"
   ],
   "implementation": {
-    "status": "示例已执行真实框架，模型为模拟",
-    "verification": "Python 与空主题已实际执行，节点前后状态与代码位置见轨迹。完整六类场景见发布测试记录；真实模型未测试。"
+    "status": "已提供可运行框架示例，待课堂实测",
+    "verification": "图中节点均绑定项目实际函数；模拟、框架和真实模型证据分开。"
   },
   "teaching_version": "1.4.0",
   "file_catalog": [
@@ -2195,152 +1843,62 @@
       "delivery": "本看板展示演示假设。完成剩余测试并导出设计、契约、测试、交接说明后才可标记设计完成。"
     },
     "system": {
-      "kind": "workflow",
-      "reason": "课程咨询的校验、查询和异常出口都有明确规则，先采用固定工作流；动态工具决策在独立对比案例演示。"
+      "kind": "agent",
+      "reason": "模型根据公开工具调用选择下一步，用同一课程查询工具对比动态决策。",
+      "dynamic_node": "model",
+      "decision_field": "choice"
     },
     "graph": {
       "nodes": [
         {
           "id": "START",
           "label": "开始",
+          "kind": "入口",
+          "x": 30,
+          "y": 30
+        },
+        {
+          "id": "model",
+          "label": "模型决定下一步",
+          "kind": "模型",
+          "x": 30,
+          "y": 180
+        },
+        {
+          "id": "tools",
+          "label": "执行模型选的工具",
+          "kind": "工具",
           "x": 330,
-          "y": 35,
-          "kind": "入口"
-        },
-        {
-          "id": "validate",
-          "label": "检查输入",
-          "x": 330,
-          "y": 175,
-          "kind": "规则"
-        },
-        {
-          "id": "ask",
-          "label": "追问学习主题",
-          "x": 35,
-          "y": 335,
-          "kind": "回应"
-        },
-        {
-          "id": "search",
-          "label": "查询课程目录",
-          "x": 330,
-          "y": 335,
-          "kind": "工具"
-        },
-        {
-          "id": "error",
-          "label": "说明查询错误",
-          "x": 35,
-          "y": 525,
-          "kind": "回应"
-        },
-        {
-          "id": "missing",
-          "label": "说明资料不足",
-          "x": 330,
-          "y": 525,
-          "kind": "回应"
-        },
-        {
-          "id": "answer",
-          "label": "生成带出处的回答",
-          "x": 625,
-          "y": 525,
-          "kind": "模型"
+          "y": 180
         },
         {
           "id": "END",
-          "label": "本轮结束",
-          "x": 330,
-          "y": 745,
-          "kind": "出口"
-        },
-        {
-          "id": "invalid",
-          "label": "输入类型错误",
-          "kind": "校验出口",
-          "x": 15,
-          "y": 175
-        },
-        {
-          "id": "outside",
-          "label": "任务超出范围",
-          "kind": "边界出口",
-          "x": 635,
-          "y": 175
+          "label": "结束",
+          "kind": "出口",
+          "x": 30,
+          "y": 360
         }
       ],
       "edges": [
         {
           "from": "START",
-          "to": "validate",
-          "label": "输入"
+          "to": "model",
+          "label": ""
         },
         {
-          "from": "validate",
-          "to": "ask",
-          "label": "缺主题"
+          "from": "model",
+          "to": "tools",
+          "label": "tool_calls 非空"
         },
         {
-          "from": "validate",
-          "to": "search",
-          "label": "完整"
+          "from": "tools",
+          "to": "model",
+          "label": "回填 ToolMessage"
         },
         {
-          "from": "search",
-          "to": "error",
-          "label": "error 非空"
-        },
-        {
-          "from": "search",
-          "to": "missing",
-          "label": "无资料"
-        },
-        {
-          "from": "search",
-          "to": "answer",
-          "label": "有资料"
-        },
-        {
-          "from": "ask",
+          "from": "model",
           "to": "END",
-          "label": "下轮重新输入"
-        },
-        {
-          "from": "error",
-          "to": "END",
-          "label": "失败结束"
-        },
-        {
-          "from": "missing",
-          "to": "END",
-          "label": "不足说明"
-        },
-        {
-          "from": "answer",
-          "to": "END",
-          "label": "完成"
-        },
-        {
-          "from": "validate",
-          "to": "invalid",
-          "label": "类型错误"
-        },
-        {
-          "from": "validate",
-          "to": "outside",
-          "label": "范围外"
-        },
-        {
-          "from": "invalid",
-          "to": "END",
-          "label": "结束"
-        },
-        {
-          "from": "outside",
-          "to": "END",
-          "label": "结束"
+          "label": "最终回答或次数上限"
         }
       ]
     },
@@ -2355,139 +1913,61 @@
         "question": {
           "type": "string"
         },
-        "topic": {
+        "answer": {
           "type": "string",
           "default": ""
         },
-        "route": {
-          "type": "string",
-          "default": ""
-        },
-        "documents": {
+        "messages": {
           "type": "list",
           "default": []
         },
-        "source": {
-          "type": "string",
-          "default": ""
+        "attempts": {
+          "type": "integer",
+          "default": 0
         },
-        "error": {
-          "type": "string",
-          "default": ""
+        "tool_steps": {
+          "type": "integer",
+          "default": 0
         },
-        "answer": {
+        "choice": {
           "type": "string",
           "default": ""
         }
       },
       "nodes": {
-        "validate": {
-          "function": "validate_request",
+        "model": {
           "source": "implementation/agent_nodes.py",
+          "function": "agent_model",
           "reads": [
-            "question"
+            "question",
+            "messages",
+            "attempts"
           ],
           "writes": [
-            "topic",
-            "route"
-          ],
-          "preview_update": {
-            "topic": "Python",
-            "route": "search"
-          }
-        },
-        "ask": {
-          "function": "ask_topic",
-          "source": "implementation/agent_nodes.py",
-          "reads": [],
-          "writes": [
+            "messages",
+            "attempts",
+            "choice",
             "answer"
           ],
           "preview_update": {
-            "answer": "请补充主题"
+            "choice": "finish",
+            "answer": "设计模拟回答",
+            "attempts": 1
           }
         },
-        "search": {
-          "function": "search_catalog",
+        "tools": {
           "source": "implementation/agent_nodes.py",
+          "function": "agent_tools",
           "reads": [
-            "topic"
+            "messages",
+            "tool_steps"
           ],
           "writes": [
-            "documents",
-            "source",
-            "error"
+            "messages",
+            "tool_steps"
           ],
           "preview_update": {
-            "documents": [
-              {
-                "topic": "Python"
-              }
-            ],
-            "source": "模拟目录",
-            "error": ""
-          }
-        },
-        "answer": {
-          "function": "answer_courses",
-          "source": "implementation/agent_nodes.py",
-          "reads": [
-            "documents",
-            "question"
-          ],
-          "writes": [
-            "answer"
-          ],
-          "preview_update": {
-            "answer": "模拟课程回答"
-          }
-        },
-        "error": {
-          "function": "tool_error",
-          "source": "implementation/agent_nodes.py",
-          "reads": [
-            "error"
-          ],
-          "writes": [
-            "answer"
-          ],
-          "preview_update": {
-            "answer": "查询失败"
-          }
-        },
-        "missing": {
-          "function": "no_result",
-          "source": "implementation/agent_nodes.py",
-          "reads": [
-            "documents"
-          ],
-          "writes": [
-            "answer"
-          ],
-          "preview_update": {
-            "answer": "没有资料"
-          }
-        },
-        "invalid": {
-          "function": "invalid_request",
-          "source": "implementation/agent_nodes.py",
-          "reads": [],
-          "writes": [
-            "answer"
-          ],
-          "preview_update": {
-            "answer": "输入类型错误"
-          }
-        },
-        "outside": {
-          "function": "outside_scope",
-          "source": "implementation/agent_nodes.py",
-          "reads": [],
-          "writes": [
-            "answer"
-          ],
-          "preview_update": {
-            "answer": "范围外"
+            "tool_steps": 1
           }
         }
       },
@@ -2501,52 +1981,35 @@
             "source": "string"
           },
           "failure": "异常由 search_catalog 捕获并写 error，图路由至 error 节点",
-          "node": "search"
+          "node": "tools"
         }
       },
       "routes": {
-        "validate": [
+        "model": [
           {
-            "field": "route",
+            "field": "choice",
             "op": "eq",
-            "value": "missing",
-            "to": "ask"
-          },
-          {
-            "field": "route",
-            "op": "eq",
-            "value": "invalid",
-            "to": "invalid"
-          },
-          {
-            "field": "route",
-            "op": "eq",
-            "value": "outside",
-            "to": "outside"
+            "value": "tools",
+            "to": "tools"
           },
           {
             "op": "default",
-            "to": "search"
-          }
-        ],
-        "search": [
-          {
-            "field": "error",
-            "op": "nonempty",
-            "to": "error"
-          },
-          {
-            "field": "documents",
-            "op": "empty",
-            "to": "missing"
-          },
-          {
-            "op": "default",
-            "to": "answer"
+            "to": "END"
           }
         ]
       },
-      "loop_limits": {},
+      "loop_limits": {
+        "model": {
+          "counter": "attempts",
+          "max": 3,
+          "exit": "END"
+        },
+        "tools": {
+          "counter": "tool_steps",
+          "max": 3,
+          "exit": "model"
+        }
+      },
       "tests": [
         {
           "case": "normal",
@@ -2631,62 +2094,5 @@
     "reviews": []
   },
   "learning_stage": "expand",
-  "runs": [
-    {
-      "run": "077840b7-7a47-4965-b4e2-58e987800e40",
-      "mode": "framework",
-      "status": "executed",
-      "evidence": "实际 LangGraph；模拟模型",
-      "error": "",
-      "design_hash": "01cf27a7102b2b6c6d33495e5918e1b680e8e243cf918085e884b40050ffeb5c",
-      "source_hashes": {
-        "implementation/agent_nodes.py": "117ddeacce529c7ff0ed96b3156a454ebd5d05a9d57f68947e7ee7260a953f8e",
-        "implementation/course_catalog.json": "e90512325f41adfe4a4904b32cdd2abcc305317a6a1c73351a0316712744d380",
-        "implementation/tools.py": "99a2b06a84dd9e0ab2ce9a5742910562f460fe411ce55a28ca25213064d180f7"
-      },
-      "executed_sources": [
-        "implementation/agent_nodes.py"
-      ],
-      "output": {
-        "question": "Python",
-        "topic": "Python",
-        "route": "search",
-        "documents": [
-          {
-            "name": "Python 入门",
-            "topic": "Python",
-            "level": "零基础"
-          }
-        ],
-        "source": "课堂模拟目录 A（非真实课程）",
-        "error": "",
-        "answer": "【模拟模型】找到课程：[{\"name\": \"Python 入门\", \"topic\": \"Python\", \"level\": \"零基础\"}]"
-      }
-    },
-    {
-      "run": "e72b5580-22a4-48dc-92aa-bda4c2599b4c",
-      "mode": "framework",
-      "status": "executed",
-      "evidence": "实际 LangGraph；模拟模型",
-      "error": "",
-      "design_hash": "01cf27a7102b2b6c6d33495e5918e1b680e8e243cf918085e884b40050ffeb5c",
-      "source_hashes": {
-        "implementation/agent_nodes.py": "117ddeacce529c7ff0ed96b3156a454ebd5d05a9d57f68947e7ee7260a953f8e",
-        "implementation/course_catalog.json": "e90512325f41adfe4a4904b32cdd2abcc305317a6a1c73351a0316712744d380",
-        "implementation/tools.py": "99a2b06a84dd9e0ab2ce9a5742910562f460fe411ce55a28ca25213064d180f7"
-      },
-      "executed_sources": [
-        "implementation/agent_nodes.py"
-      ],
-      "output": {
-        "question": "",
-        "topic": "",
-        "route": "missing",
-        "documents": [],
-        "source": "",
-        "error": "",
-        "answer": "请告诉我你想学习的课程主题。"
-      }
-    }
-  ]
+  "runs": []
 }

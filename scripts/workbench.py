@@ -7,6 +7,8 @@ import json
 import mimetypes
 import os
 import secrets
+import subprocess
+import sys
 import threading
 import time
 import webbrowser
@@ -16,8 +18,9 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 from render_board import validate
+from design_engine import normalize, reconcile, derived, audit, grade, affect, fingerprint
 
-VERSION = '1.3.0'
+VERSION = '1.4.0'
 TEXT_EXTENSIONS = {'.py', '.md', '.json', '.yaml', '.yml', '.txt', '.mmd', '.html',
                    '.css', '.js', '.ts', '.tsx', '.jsx', '.toml', '.ini', '.csv', '.bat', '.ps1'}
 EXCLUDED = {'.git', '.venv', 'venv', 'node_modules', '__pycache__', '.workbench'}
@@ -31,7 +34,7 @@ def digest(data):
 
 def bundle_fingerprint():
     root = Path(__file__).resolve().parents[1]
-    files = [root / 'scripts' / 'workbench.py', root / 'scripts' / 'render_board.py']
+    files = [root / 'scripts' / n for n in ('workbench.py', 'render_board.py', 'design_engine.py', 'run_design.py')]
     files += sorted((root / 'assets' / 'workbench').glob('*'))
     return digest(b''.join(p.read_bytes() for p in files if p.is_file()))
 
@@ -63,7 +66,12 @@ class Project:
     def state(self):
         self.state_path = self.path('agent-design/teaching-state.json')
         state = json.loads(self.state_path.read_text(encoding='utf-8-sig'))
-        validate(state)
+        validate({**state, 'design_status': '进行中'})
+        baseline = self.root / '.workbench' / 'last-design.json'
+        previous = json.loads(baseline.read_text(encoding='utf-8')) if baseline.exists() else None
+        state = normalize(state, previous)
+        if state.get('design_status') == '设计完成' and not audit(state, self.root)['passed']:
+            state['design_status'] = '需复核'
         return state
 
     def files(self, state):
@@ -105,6 +113,9 @@ class Project:
                             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))]
                     except SyntaxError as error:
                         info['syntax_notice'] = f'第 {error.lineno} 行语法待检查：{error.msg}'
+                if relative in derived(state):
+                    info['editable'] = False
+                    info['notice'] = '由结构化设计生成。请在学习路线的契约区或结构课堂修改，再保存同步。'
                 results.append(info)
         return results
 
@@ -124,7 +135,9 @@ class Project:
                         continue
             return {'state': state, 'files': files, 'revision': revision,
                     'project_name': self.root.name, 'project_path': str(self.root),
-                    'server_time': datetime.now().astimezone().isoformat(), 'activity': activities}
+                    'server_time': datetime.now().astimezone().isoformat(), 'activity': activities,
+                    'audit': audit(state, self.root),
+                    'sync_status': {name: ((self.root / name).is_file() and (self.root / name).read_text(encoding='utf-8') == text) for name, text in derived(state).items()}}
 
     def write(self, path, content, action):
         if path.exists():
@@ -152,19 +165,35 @@ class Project:
                 raise ValueError('文件内容必须是 2 MB 以内的文本。')
             if not path.is_file() or digest(path.read_bytes()) != body.get('expected_sha'):
                 raise Conflict('文件被 WorkBuddy 或其他窗口改动了。草稿已保留，请读取最新内容后再编辑。')
+            if body['path'] in derived(self.state()):
+                raise ValueError('这是自动生成的设计文档，请修改结构化设计，避免产生第二份事实来源。')
             if path == self.state_path:
                 state = json.loads(content)
-                validate(state)
-                self.write(path, content, '网页修改进度文件')
+                return self.save_state({'state': state, 'expected_revision': self.snapshot()['revision']})
             else:
                 state = self.state()
+                before = path.read_text(encoding='utf-8-sig')
                 self.write(path, content, '网页保存文件')
+                business = True
+                if path.suffix == '.py':
+                    try:
+                        business = ast.dump(ast.parse(before)) != ast.dump(ast.parse(content))
+                    except SyntaxError:
+                        pass
+                ids = []
                 for module in state['modules']:
                     for artifact in module.get('artifacts', []):
                         if artifact.get('path') == body['path']:
-                            module['presentation_status'] = 'review'
-                            module['status'] = 'review'
-                            artifact['outdated'] = True
+                            anchor = str(artifact.get('content', '')).split('\n')[0]
+                            if anchor.startswith('## ') and anchor in before and anchor in content:
+                                def section(text):
+                                    start = text.index(anchor); end = text.find('\n## ', start + len(anchor))
+                                    return text[start:end if end >= 0 else None]
+                                if section(before) == section(content): continue
+                            ids.append(module['id']); artifact['outdated'] = True
+                for node in state['design']['contracts'].get('nodes', {}).values():
+                    if node.get('source') == body['path']: ids.append('nodes')
+                affect(state, ids, f'{body["path"]} 的' + ('业务内容改变。' if business else '注释或格式改变，请核对讲解。'), business)
                 state.setdefault('open_questions', [])
                 note = f'需复核：网页修改了 {body["path"]}，请核对相关讲解、结构与代码。'
                 if note not in state['open_questions']:
@@ -180,9 +209,65 @@ class Project:
                 raise Conflict('项目有新成果。草稿已保留，请先读取最新内容，避免覆盖 WorkBuddy 的更新。')
             state = body.get('state')
             validate(state)
+            requested_complete = state.get('design_status') == '设计完成'
+            baseline = self.root / '.workbench' / 'last-design.json'
+            previous = json.loads(baseline.read_text(encoding='utf-8')) if baseline.exists() else self.state()
+            state = reconcile(state, previous)
+            validate({**state, 'design_status': '进行中'})
             state['teaching_version'] = VERSION
+            outputs = derived(state)
+            # Preflight all generated file names before writing any of them.
+            for name in outputs:
+                path = self.path(name)
+                if path.exists():
+                    old = path.read_text(encoding='utf-8-sig')
+                    if not (old.startswith('<!-- generated by agent-development-coach') or old.startswith('%% generated by agent-development-coach') or ('"generated_by": "agent-development-coach"' in old and name.endswith('.json'))):
+                        raise Conflict(name + ' 已有手工内容，先改名保留再同步；不会覆盖。')
+            if requested_complete:
+                result = audit(state, self.root)
+                blocking = [i for i in result['issues'] if '尚未同步' not in i['message']]
+                if blocking: raise ValueError('不能标记设计完成：' + '；'.join(i['message'] for i in blocking[:8]))
+                state['design_status'] = '设计完成'
+            for name, text in outputs.items():
+                path = self.path(name)
+                if not path.exists() or path.read_text(encoding='utf-8') != text:
+                    self.write(path, text, '结构化设计同步生成文档')
             self.write(self.state_path, json.dumps(state, ensure_ascii=False, indent=2), '网页保存设计或架构草稿')
+            baseline.parent.mkdir(parents=True, exist_ok=True)
+            baseline.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding='utf-8')
             return self.snapshot()
+
+    def exercise(self, body):
+        with self.lock:
+            if self.snapshot()['revision'] != body.get('expected_revision'): raise Conflict('设计已经更新，请读取最新再回答。')
+            state = grade(self.state(), body['module'], body.get('answer'), body.get('reason', ''))
+            return self.save_state({'state': state, 'expected_revision': body['expected_revision']})
+
+    def run(self, body):
+        if body.get('mode') not in ('design', 'framework', 'real'): raise ValueError('请选择三种明确的运行模式。')
+        initial = self.snapshot()
+        if initial['revision'] != body.get('expected_revision'): raise Conflict('请先保存并读取最新设计，再运行。')
+        runner = Path(__file__).with_name('run_design.py')
+        command = [sys.executable, '-X', 'utf8', str(runner), '--project', str(self.root), '--mode', body['mode'], '--input-json', json.dumps(body.get('question', ''), ensure_ascii=False)]
+        try:
+            result = subprocess.run(command, capture_output=True, text=True, encoding='utf-8', timeout=65,
+                                    creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
+            data = json.loads(result.stdout)
+        except subprocess.TimeoutExpired:
+            raise ValueError('运行超时，已结束本次进程；没有记录为通过。')
+        except (ValueError, TypeError, OSError) as e:
+            raise ValueError('运行失败：' + str(e))
+        with self.lock:
+            if self.snapshot()['revision'] != initial['revision']:
+                data['stale'] = True
+                return {'run_result': data, **self.snapshot()}
+            state = self.state()
+            state['trace'] = data.get('events', [])
+            state.setdefault('runs', []).append({k: v for k, v in data.items() if k != 'events'})
+            state['runs'] = state['runs'][-30:]
+            state['implementation']['verification'] = f'{data["mode"]}：{data["status"]}；{data.get("error", "")}'
+            self.write(self.state_path, json.dumps(state, ensure_ascii=False, indent=2), '记录实际运行或设计模拟证据')
+            return {'run_result': data, **self.snapshot()}
 
 
 def make_server(project, assets, port):
@@ -257,6 +342,10 @@ def make_server(project, assets, port):
                     snapshot = project.save_file(body)
                 elif self.path == '/api/state':
                     snapshot = project.save_state(body)
+                elif self.path == '/api/exercise':
+                    snapshot = project.exercise(body)
+                elif self.path == '/api/run':
+                    snapshot = project.run(body)
                 else:
                     return self.json_response({'error': '没有这个保存入口。'}, 404)
                 snapshot['token'] = token

@@ -1,0 +1,409 @@
+{
+  "generated_by": "agent-development-coach",
+  "design": {
+    "version": 1,
+    "component_decisions": {
+      "goal": "帮助学员查询和推荐课程；不替学员报名、不承诺课程效果。成功结果含课程、理由、出处。",
+      "io": "输入 question 与 topic；输出 answer 和 sources。主题缺失则追问并结束本轮。选 LangGraph 自定义分支，模型可用 LangChain 接口。",
+      "model": "框架模式执行真实 LangGraph，使用明确标注的模拟回答；真实模型只在配置密钥并选择 real 后调用。",
+      "prompt": "只依据课程资料回答；说明资料不足；不编造价格和效果；不付款报名。",
+      "tools": "search_courses(topic) 返回 items 与 source；无结果为 []，失败抛异常。search_catalog 捕获异常后写 error，路由到失败出口；工具只读。",
+      "knowledge": "采用课堂目录普通查询；当前不采用向量库。目录由机构更新，回答引用目录编号。",
+      "memory": "不采用业务记忆：本课一次输入一次回答。未来多轮咨询再加入会话笔记。课堂学习进度仍保存。",
+      "state": "question/topic 为字符串；documents 为列表；answer/error 为字符串。字段普通覆盖，查询写资料或错误。",
+      "nodes": "检查输入、追问、查询目录、说明错误、说明不足、生成回答。每个节点读写字段按契约定义。",
+      "edges": "START 进入检查输入，查询后分出口；所有终端回应节点连接 END。",
+      "routing": "缺主题走追问；完整走查询；error 非空走说明错误；documents 为空走说明不足；有资料走生成回答。",
+      "loops": "不自动重试；查询失败直接说明错误并结束。每个请求最多查询一次，无业务循环。",
+      "control": "不采用业务持久化和人工审核：没有跨进程恢复或外部写动作。未来加入报名动作时重新设计审核。",
+      "evaluation": "覆盖正常、类型错误、缺少主题、无资料、工具失败和越界六类输入；保留实际节点执行轨迹和源代码哈希。",
+      "delivery": "本看板展示演示假设。完成剩余测试并导出设计、契约、测试、交接说明后才可标记设计完成。"
+    },
+    "system": {
+      "kind": "workflow",
+      "reason": "课程咨询的校验、查询和异常出口都有明确规则，先采用固定工作流；动态工具决策在独立对比案例演示。"
+    },
+    "graph": {
+      "nodes": [
+        {
+          "id": "START",
+          "label": "开始",
+          "x": 330,
+          "y": 35,
+          "kind": "入口"
+        },
+        {
+          "id": "validate",
+          "label": "检查输入",
+          "x": 330,
+          "y": 175,
+          "kind": "规则"
+        },
+        {
+          "id": "ask",
+          "label": "追问学习主题",
+          "x": 35,
+          "y": 335,
+          "kind": "回应"
+        },
+        {
+          "id": "search",
+          "label": "查询课程目录",
+          "x": 330,
+          "y": 335,
+          "kind": "工具"
+        },
+        {
+          "id": "error",
+          "label": "说明查询错误",
+          "x": 35,
+          "y": 525,
+          "kind": "回应"
+        },
+        {
+          "id": "missing",
+          "label": "说明资料不足",
+          "x": 330,
+          "y": 525,
+          "kind": "回应"
+        },
+        {
+          "id": "answer",
+          "label": "生成带出处的回答",
+          "x": 625,
+          "y": 525,
+          "kind": "模型"
+        },
+        {
+          "id": "END",
+          "label": "本轮结束",
+          "x": 330,
+          "y": 745,
+          "kind": "出口"
+        },
+        {
+          "id": "invalid",
+          "label": "输入类型错误",
+          "kind": "校验出口",
+          "x": 15,
+          "y": 175
+        },
+        {
+          "id": "outside",
+          "label": "任务超出范围",
+          "kind": "边界出口",
+          "x": 635,
+          "y": 175
+        }
+      ],
+      "edges": [
+        {
+          "from": "START",
+          "to": "validate",
+          "label": "输入"
+        },
+        {
+          "from": "validate",
+          "to": "ask",
+          "label": "缺主题"
+        },
+        {
+          "from": "validate",
+          "to": "search",
+          "label": "完整"
+        },
+        {
+          "from": "search",
+          "to": "error",
+          "label": "error 非空"
+        },
+        {
+          "from": "search",
+          "to": "missing",
+          "label": "无资料"
+        },
+        {
+          "from": "search",
+          "to": "answer",
+          "label": "有资料"
+        },
+        {
+          "from": "ask",
+          "to": "END",
+          "label": "下轮重新输入"
+        },
+        {
+          "from": "error",
+          "to": "END",
+          "label": "失败结束"
+        },
+        {
+          "from": "missing",
+          "to": "END",
+          "label": "不足说明"
+        },
+        {
+          "from": "answer",
+          "to": "END",
+          "label": "完成"
+        },
+        {
+          "from": "validate",
+          "to": "invalid",
+          "label": "类型错误"
+        },
+        {
+          "from": "validate",
+          "to": "outside",
+          "label": "范围外"
+        },
+        {
+          "from": "invalid",
+          "to": "END",
+          "label": "结束"
+        },
+        {
+          "from": "outside",
+          "to": "END",
+          "label": "结束"
+        }
+      ]
+    },
+    "contracts": {
+      "inputs": [
+        "question"
+      ],
+      "outputs": [
+        "answer"
+      ],
+      "state_fields": {
+        "question": {
+          "type": "string"
+        },
+        "topic": {
+          "type": "string",
+          "default": ""
+        },
+        "route": {
+          "type": "string",
+          "default": ""
+        },
+        "documents": {
+          "type": "list",
+          "default": []
+        },
+        "source": {
+          "type": "string",
+          "default": ""
+        },
+        "error": {
+          "type": "string",
+          "default": ""
+        },
+        "answer": {
+          "type": "string",
+          "default": ""
+        }
+      },
+      "nodes": {
+        "validate": {
+          "function": "validate_request",
+          "source": "implementation/agent_nodes.py",
+          "reads": [
+            "question"
+          ],
+          "writes": [
+            "topic",
+            "route"
+          ],
+          "preview_update": {
+            "topic": "Python",
+            "route": "search"
+          }
+        },
+        "ask": {
+          "function": "ask_topic",
+          "source": "implementation/agent_nodes.py",
+          "reads": [],
+          "writes": [
+            "answer"
+          ],
+          "preview_update": {
+            "answer": "请补充主题"
+          }
+        },
+        "search": {
+          "function": "search_catalog",
+          "source": "implementation/agent_nodes.py",
+          "reads": [
+            "topic"
+          ],
+          "writes": [
+            "documents",
+            "source",
+            "error"
+          ],
+          "preview_update": {
+            "documents": [
+              {
+                "topic": "Python"
+              }
+            ],
+            "source": "模拟目录",
+            "error": ""
+          }
+        },
+        "answer": {
+          "function": "answer_courses",
+          "source": "implementation/agent_nodes.py",
+          "reads": [
+            "documents",
+            "question"
+          ],
+          "writes": [
+            "answer"
+          ],
+          "preview_update": {
+            "answer": "模拟课程回答"
+          }
+        },
+        "error": {
+          "function": "tool_error",
+          "source": "implementation/agent_nodes.py",
+          "reads": [
+            "error"
+          ],
+          "writes": [
+            "answer"
+          ],
+          "preview_update": {
+            "answer": "查询失败"
+          }
+        },
+        "missing": {
+          "function": "no_result",
+          "source": "implementation/agent_nodes.py",
+          "reads": [
+            "documents"
+          ],
+          "writes": [
+            "answer"
+          ],
+          "preview_update": {
+            "answer": "没有资料"
+          }
+        },
+        "invalid": {
+          "function": "invalid_request",
+          "source": "implementation/agent_nodes.py",
+          "reads": [],
+          "writes": [
+            "answer"
+          ],
+          "preview_update": {
+            "answer": "输入类型错误"
+          }
+        },
+        "outside": {
+          "function": "outside_scope",
+          "source": "implementation/agent_nodes.py",
+          "reads": [],
+          "writes": [
+            "answer"
+          ],
+          "preview_update": {
+            "answer": "范围外"
+          }
+        }
+      },
+      "tools": {
+        "search_courses": {
+          "input": {
+            "topic": "非空字符串"
+          },
+          "output": {
+            "items": "list",
+            "source": "string"
+          },
+          "failure": "异常由 search_catalog 捕获并写 error，图路由至 error 节点",
+          "node": "search"
+        }
+      },
+      "routes": {
+        "validate": [
+          {
+            "field": "route",
+            "op": "eq",
+            "value": "missing",
+            "to": "ask"
+          },
+          {
+            "field": "route",
+            "op": "eq",
+            "value": "invalid",
+            "to": "invalid"
+          },
+          {
+            "field": "route",
+            "op": "eq",
+            "value": "outside",
+            "to": "outside"
+          },
+          {
+            "op": "default",
+            "to": "search"
+          }
+        ],
+        "search": [
+          {
+            "field": "error",
+            "op": "nonempty",
+            "to": "error"
+          },
+          {
+            "field": "documents",
+            "op": "empty",
+            "to": "missing"
+          },
+          {
+            "op": "default",
+            "to": "answer"
+          }
+        ]
+      },
+      "loop_limits": {},
+      "tests": [
+        {
+          "case": "normal",
+          "input": "Python",
+          "expected": "带课程资料回答"
+        },
+        {
+          "case": "invalid",
+          "input": 42,
+          "expected": "提示问题必须是文字"
+        },
+        {
+          "case": "missing",
+          "input": "",
+          "expected": "追问主题"
+        },
+        {
+          "case": "no_result",
+          "input": "不存在的课",
+          "expected": "说明未找到"
+        },
+        {
+          "case": "tool_error",
+          "input": "Python",
+          "expected": "隔离测试目录损坏后提示查询失败"
+        },
+        {
+          "case": "out_of_scope",
+          "input": "帮我转账",
+          "expected": "说明只能提供课程咨询"
+        }
+      ]
+    }
+  }
+}

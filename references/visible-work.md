@@ -1,5 +1,7 @@
 # 每步成果展示：让学员看见做了什么
 
+本版本按 [四阶段学习与同步协议](learning-protocol.md) 执行：唯一 design 规范自动派生文档；理解检查和实际执行单独记录。旧版手工文件清单仅作历史示例，以当前规范生成的文件为准。框架示例已有真实 LangGraph 节点，设计模拟与真实运行分开。
+
 所有教学模式都使用本规范，不限于代码实践。学员应能看到真实成果、找到文件，并解释每个设计段落和代码块的用途。展示对应实际文件：写入后读回，再引用内容。无文件能力时给出可复制正文，状态写“未落盘”。
 
 ## 一个结构完成后的展示顺序
@@ -51,7 +53,7 @@ implementation/
 
 保持 `schema_version=1`，新增字段向后兼容：
 
-- `teaching_version`：`1.3.0`。
+- `teaching_version`：`1.4.0`。
 - `file_catalog`：实际文件表，条目 `{path,purpose,kind,status,caller}`。path 为项目相对路径。status 为新增/修改/已有/计划未创建/未落盘。
 - 模块 `presentation_status`：`pending` 待展示、`shown` 已完整展示、`review` 变更需重讲。初始 pending；实际完成展示后设 shown。
 - 模块 `artifacts`：具体产物数组，每条 `{path,purpose,kind,change,content,content_scope,explanations,verification}`。
