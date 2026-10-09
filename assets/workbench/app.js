@@ -155,6 +155,7 @@
     try {
       const response=await fetch('/api/snapshot'+(!manual&&snapshot?'?revision='+encodeURIComponent(snapshot.revision):''),{cache:'no-store'});
       const data=await response.json();if(!response.ok)throw new Error(data.error||'读取失败');
+      if(snapshot&&data.token)snapshot.token=data.token;
       if(data.unchanged){if(connection==='error'){connection='ready';render();}return;}
       connection='ready';errorMessage='';
       if(snapshot&&dirty()&&!manual){pendingSnapshot=data;updateChrome();return;}

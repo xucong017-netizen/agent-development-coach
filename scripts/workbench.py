@@ -218,7 +218,7 @@ def make_server(project, assets, port):
                     snapshot = project.snapshot()
                     query = parse_qs(url.query)
                     if query.get('revision', [''])[0] == snapshot['revision']:
-                        return self.json_response({'unchanged': True})
+                        return self.json_response({'unchanged': True, 'token': token})
                     snapshot['token'] = token
                     return self.json_response(snapshot)
                 except (ValueError, OSError) as error:
