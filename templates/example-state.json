@@ -1,0 +1,1116 @@
+{
+  "schema_version": 1,
+  "title": "课程咨询助手 · 课堂模拟示例",
+  "mode": "教师演示",
+  "delivery": "设计与代码",
+  "current_module": "evaluation",
+  "design_status": "进行中",
+  "decisions": {
+    "scope": "帮助学员查询和推荐课程；不替学员报名、不承诺课程效果。成功结果含课程、理由、出处。",
+    "framework": "LangGraph 自定义图 + LangChain 模型接口（待接入）",
+    "system_prompt": "只依据课程资料回答；说明资料不足；不编造价格和效果；不付款报名。",
+    "memory": "本课不采用",
+    "retry": "最多查询一次，失败结束"
+  },
+  "modules": [
+    {
+      "id": "goal",
+      "title": "任务、范围与验收",
+      "purpose": "给智能体一张有边界和成功标准的任务单。",
+      "parts": "使用者、任务、范围、排除事项、成功标准",
+      "question": "你想让智能体帮助谁完成什么事？",
+      "acceptance": "能区分范围内任务与越界请求。",
+      "status": "done",
+      "decision": "帮助学员查询和推荐课程；不替学员报名、不承诺课程效果。成功结果含课程、理由、出处。",
+      "origin": "演示假设",
+      "check": "课堂案例已说明；需由学员项目重新检查。",
+      "graph_kind": "教学示意",
+      "graph": {
+        "nodes": [
+          {
+            "id": "goal_0",
+            "label": "使用者",
+            "x": 25,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "goal_1",
+            "label": "任务单",
+            "x": 315,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "goal_2",
+            "label": "成功标准",
+            "x": 25,
+            "y": 185,
+            "kind": "教学结构"
+          }
+        ],
+        "edges": [
+          {
+            "from": "goal_0",
+            "to": "goal_1",
+            "label": ""
+          },
+          {
+            "from": "goal_1",
+            "to": "goal_2",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "io",
+      "title": "输入、输出与架构路线",
+      "purpose": "定义接收什么、交付什么，并选择适合的实现路线。",
+      "parts": "输入字段、缺失处理、输出样例、实现路线",
+      "question": "用户最终应该得到什么结果？",
+      "acceptance": "完整与缺字段的输入各有处理方式。",
+      "status": "done",
+      "decision": "输入 question 与 topic；输出 answer 和 sources。主题缺失则追问并结束本轮。选 LangGraph 自定义分支，模型可用 LangChain 接口。",
+      "origin": "演示假设",
+      "check": "课堂案例已说明；需由学员项目重新检查。",
+      "graph_kind": "教学示意",
+      "graph": {
+        "nodes": [
+          {
+            "id": "io_0",
+            "label": "用户问题",
+            "x": 25,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "io_1",
+            "label": "输入检查",
+            "x": 315,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "io_2",
+            "label": "智能体",
+            "x": 25,
+            "y": 185,
+            "kind": "教学结构"
+          },
+          {
+            "id": "io_3",
+            "label": "输出模板",
+            "x": 315,
+            "y": 185,
+            "kind": "教学结构"
+          }
+        ],
+        "edges": [
+          {
+            "from": "io_0",
+            "to": "io_1",
+            "label": ""
+          },
+          {
+            "from": "io_1",
+            "to": "io_2",
+            "label": ""
+          },
+          {
+            "from": "io_2",
+            "to": "io_3",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "model",
+      "title": "模型",
+      "purpose": "用语言模型理解和整理信息；先模拟也能开始设计。",
+      "parts": "供应商接口、模型标识、能力需求、上下文、预算",
+      "question": "先用模拟演练，还是接入已有模型？",
+      "acceptance": "模型不能凭空读取外部数据库。",
+      "status": "done",
+      "decision": "设计模型职责为整理有出处的课程回答，尚未选择真实供应商。先用课堂模拟输出。",
+      "origin": "演示假设",
+      "check": "课堂案例已说明；需由学员项目重新检查。",
+      "graph_kind": "教学示意",
+      "graph": {
+        "nodes": [
+          {
+            "id": "model_0",
+            "label": "任务与上下文",
+            "x": 25,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "model_1",
+            "label": "语言模型",
+            "x": 315,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "model_2",
+            "label": "回答或工具请求",
+            "x": 25,
+            "y": 185,
+            "kind": "教学结构"
+          }
+        ],
+        "edges": [
+          {
+            "from": "model_0",
+            "to": "model_1",
+            "label": ""
+          },
+          {
+            "from": "model_1",
+            "to": "model_2",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "prompt",
+      "title": "提示词与消息",
+      "purpose": "明确模型的角色、工作规则和回答方式。",
+      "parts": "系统规则、用户消息、资料、工具结果、输出约定",
+      "question": "哪些规则必须每次遵守？",
+      "acceptance": "资料不足时有不编造的回应。",
+      "status": "done",
+      "decision": "只依据课程资料回答；说明资料不足；不编造价格和效果；不付款报名。",
+      "origin": "演示假设",
+      "check": "课堂案例已说明；需由学员项目重新检查。",
+      "graph_kind": "教学示意",
+      "graph": {
+        "nodes": [
+          {
+            "id": "prompt_0",
+            "label": "岗位说明",
+            "x": 25,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "prompt_1",
+            "label": "用户与资料",
+            "x": 315,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "prompt_2",
+            "label": "模型",
+            "x": 25,
+            "y": 185,
+            "kind": "教学结构"
+          },
+          {
+            "id": "prompt_3",
+            "label": "符合规则的回答",
+            "x": 315,
+            "y": 185,
+            "kind": "教学结构"
+          }
+        ],
+        "edges": [
+          {
+            "from": "prompt_0",
+            "to": "prompt_1",
+            "label": ""
+          },
+          {
+            "from": "prompt_1",
+            "to": "prompt_2",
+            "label": ""
+          },
+          {
+            "from": "prompt_2",
+            "to": "prompt_3",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "tools",
+      "title": "工具及调用契约",
+      "purpose": "通过明确定义的工具查询信息或执行动作。",
+      "parts": "名称、用途、输入、输出、空结果、错误和影响",
+      "question": "完成任务要查什么信息或做什么操作？",
+      "acceptance": "每个采用工具有输入输出及失败出口。",
+      "status": "done",
+      "decision": "search_courses(topic: string) 返回 items 与 source。无结果 items=[]；失败用 error 区分；只读。",
+      "origin": "演示假设",
+      "check": "课堂案例已说明；需由学员项目重新检查。",
+      "graph_kind": "教学示意",
+      "graph": {
+        "nodes": [
+          {
+            "id": "tools_0",
+            "label": "模型提出请求",
+            "x": 25,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "tools_1",
+            "label": "参数检查",
+            "x": 315,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "tools_2",
+            "label": "查询工具",
+            "x": 25,
+            "y": 185,
+            "kind": "教学结构"
+          },
+          {
+            "id": "tools_3",
+            "label": "返回结果",
+            "x": 315,
+            "y": 185,
+            "kind": "教学结构"
+          }
+        ],
+        "edges": [
+          {
+            "from": "tools_0",
+            "to": "tools_1",
+            "label": ""
+          },
+          {
+            "from": "tools_1",
+            "to": "tools_2",
+            "label": ""
+          },
+          {
+            "from": "tools_2",
+            "to": "tools_3",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "knowledge",
+      "title": "知识与检索",
+      "purpose": "先查可靠材料，再依据材料回答。",
+      "parts": "来源、更新、查询、片段、出处、无结果处理",
+      "question": "哪些资料算可靠，多久更新？",
+      "acceptance": "无资料不编造；来源可追溯。",
+      "status": "done",
+      "decision": "采用课堂目录普通查询；当前不采用向量库。目录由机构更新，回答引用目录编号。",
+      "origin": "演示假设",
+      "check": "课堂案例已说明；需由学员项目重新检查。",
+      "graph_kind": "教学示意",
+      "graph": {
+        "nodes": [
+          {
+            "id": "knowledge_0",
+            "label": "问题",
+            "x": 25,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "knowledge_1",
+            "label": "检索材料",
+            "x": 315,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "knowledge_2",
+            "label": "片段与出处",
+            "x": 25,
+            "y": 185,
+            "kind": "教学结构"
+          },
+          {
+            "id": "knowledge_3",
+            "label": "依据资料回答",
+            "x": 315,
+            "y": 185,
+            "kind": "教学结构"
+          }
+        ],
+        "edges": [
+          {
+            "from": "knowledge_0",
+            "to": "knowledge_1",
+            "label": ""
+          },
+          {
+            "from": "knowledge_1",
+            "to": "knowledge_2",
+            "label": ""
+          },
+          {
+            "from": "knowledge_2",
+            "to": "knowledge_3",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "memory",
+      "title": "记忆",
+      "purpose": "区分本次对话笔记与跨会话长期档案。",
+      "parts": "会话消息、长期偏好、身份、保留期、删除规则",
+      "question": "哪些信息需要记住，记多久？",
+      "acceptance": "不同用户与会话的数据不串用。",
+      "status": "skipped",
+      "decision": "不采用业务记忆：本课一次输入一次回答。未来多轮咨询再加入会话笔记。课堂学习进度仍保存。",
+      "origin": "演示假设",
+      "check": "本例不需要；已说明未来启用条件。",
+      "graph_kind": "教学示意",
+      "graph": {
+        "nodes": [
+          {
+            "id": "memory_0",
+            "label": "本轮问题",
+            "x": 25,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "memory_1",
+            "label": "会话笔记",
+            "x": 315,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "memory_2",
+            "label": "生成回答",
+            "x": 25,
+            "y": 185,
+            "kind": "教学结构"
+          }
+        ],
+        "edges": [
+          {
+            "from": "memory_0",
+            "to": "memory_1",
+            "label": ""
+          },
+          {
+            "from": "memory_1",
+            "to": "memory_2",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "state",
+      "title": "状态与更新规则",
+      "purpose": "用共享工作表在步骤之间传递必要数据。",
+      "parts": "字段、类型、初始值、读写者、覆盖或合并",
+      "question": "哪些信息必须从一步传到下一步？",
+      "acceptance": "字段有来源，更新不意外丢失信息。",
+      "status": "done",
+      "decision": "question/topic 为字符串；documents 为列表；answer/error 为字符串。字段普通覆盖，查询写资料或错误。",
+      "origin": "演示假设",
+      "check": "课堂案例已说明；需由学员项目重新检查。",
+      "graph_kind": "教学示意",
+      "graph": {
+        "nodes": [
+          {
+            "id": "state_0",
+            "label": "当前状态",
+            "x": 25,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "state_1",
+            "label": "节点处理",
+            "x": 315,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "state_2",
+            "label": "局部更新",
+            "x": 25,
+            "y": 185,
+            "kind": "教学结构"
+          },
+          {
+            "id": "state_3",
+            "label": "新状态",
+            "x": 315,
+            "y": 185,
+            "kind": "教学结构"
+          }
+        ],
+        "edges": [
+          {
+            "from": "state_0",
+            "to": "state_1",
+            "label": ""
+          },
+          {
+            "from": "state_1",
+            "to": "state_2",
+            "label": ""
+          },
+          {
+            "from": "state_2",
+            "to": "state_3",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "nodes",
+      "title": "节点",
+      "purpose": "把流程拆成职责明确的工作站。",
+      "parts": "名字、输入字段、动作、输出更新、失败结果",
+      "question": "这个节点只负责做哪一件事？",
+      "acceptance": "每个节点的输入输出都能对应状态字段。",
+      "status": "done",
+      "decision": "检查输入、追问、查询目录、说明错误、说明不足、生成回答。每个节点读写字段按契约定义。",
+      "origin": "演示假设",
+      "check": "课堂案例已说明；需由学员项目重新检查。",
+      "graph_kind": "教学示意",
+      "graph": {
+        "nodes": [
+          {
+            "id": "nodes_0",
+            "label": "输入字段",
+            "x": 25,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "nodes_1",
+            "label": "单个工作节点",
+            "x": 315,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "nodes_2",
+            "label": "输出更新",
+            "x": 25,
+            "y": 185,
+            "kind": "教学结构"
+          }
+        ],
+        "edges": [
+          {
+            "from": "nodes_0",
+            "to": "nodes_1",
+            "label": ""
+          },
+          {
+            "from": "nodes_1",
+            "to": "nodes_2",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "edges",
+      "title": "连线、入口与终点",
+      "purpose": "用连线把工作站接成有入口和出口的路线。",
+      "parts": "START、来源节点、目标节点、END",
+      "question": "哪些步骤一定要先后执行？",
+      "acceptance": "全部使用节点可达且有结束路径。",
+      "status": "done",
+      "decision": "START 进入检查输入，查询后分出口；所有终端回应节点连接 END。",
+      "origin": "演示假设",
+      "check": "课堂案例已说明；需由学员项目重新检查。",
+      "graph_kind": "教学示意",
+      "graph": {
+        "nodes": [
+          {
+            "id": "edges_0",
+            "label": "START",
+            "x": 25,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "edges_1",
+            "label": "检查输入",
+            "x": 315,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "edges_2",
+            "label": "处理任务",
+            "x": 25,
+            "y": 185,
+            "kind": "教学结构"
+          },
+          {
+            "id": "edges_3",
+            "label": "END",
+            "x": 315,
+            "y": 185,
+            "kind": "教学结构"
+          }
+        ],
+        "edges": [
+          {
+            "from": "edges_0",
+            "to": "edges_1",
+            "label": ""
+          },
+          {
+            "from": "edges_1",
+            "to": "edges_2",
+            "label": ""
+          },
+          {
+            "from": "edges_2",
+            "to": "edges_3",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "routing",
+      "title": "条件分支与路由",
+      "purpose": "不同情况走不同路线。",
+      "parts": "判断字段、条件、目的节点、默认或错误出口",
+      "question": "什么情况下需要换路线？",
+      "acceptance": "完整、缺字段、无资料均能走到合适出口。",
+      "status": "done",
+      "decision": "缺主题走追问；完整走查询；error 非空走说明错误；documents 为空走说明不足；有资料走生成回答。",
+      "origin": "演示假设",
+      "check": "课堂案例已说明；需由学员项目重新检查。",
+      "graph_kind": "教学示意",
+      "graph": {
+        "nodes": [
+          {
+            "id": "routing_0",
+            "label": "输入检查",
+            "x": 25,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "routing_1",
+            "label": "信息完整则检索",
+            "x": 315,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "routing_2",
+            "label": "缺信息则追问",
+            "x": 25,
+            "y": 185,
+            "kind": "教学结构"
+          },
+          {
+            "id": "routing_3",
+            "label": "本轮结束",
+            "x": 315,
+            "y": 185,
+            "kind": "教学结构"
+          }
+        ],
+        "edges": [
+          {
+            "from": "routing_0",
+            "to": "routing_1",
+            "label": "完整"
+          },
+          {
+            "from": "routing_0",
+            "to": "routing_2",
+            "label": "缺信息"
+          },
+          {
+            "from": "routing_1",
+            "to": "routing_3",
+            "label": "完成"
+          },
+          {
+            "from": "routing_2",
+            "to": "routing_3",
+            "label": "等待下轮"
+          }
+        ]
+      }
+    },
+    {
+      "id": "loops",
+      "title": "循环、重试与停止",
+      "purpose": "允许有界补救，保证最终能停下来。",
+      "parts": "继续条件、计数、上限、超时、失败出口",
+      "question": "失败后要重试几次，达到上限怎么办？",
+      "acceptance": "次数边界由程序执行，有明确停止条件。",
+      "status": "done",
+      "decision": "不自动重试；查询失败直接说明错误并结束。每个请求最多查询一次，无业务循环。",
+      "origin": "演示假设",
+      "check": "课堂案例已说明；需由学员项目重新检查。",
+      "graph_kind": "教学示意",
+      "graph": {
+        "nodes": [
+          {
+            "id": "loops_0",
+            "label": "执行",
+            "x": 25,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "loops_1",
+            "label": "检查",
+            "x": 315,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "loops_2",
+            "label": "未达上限则重试",
+            "x": 25,
+            "y": 185,
+            "kind": "教学结构"
+          },
+          {
+            "id": "loops_3",
+            "label": "通过或到上限结束",
+            "x": 315,
+            "y": 185,
+            "kind": "教学结构"
+          }
+        ],
+        "edges": [
+          {
+            "from": "loops_0",
+            "to": "loops_1",
+            "label": ""
+          },
+          {
+            "from": "loops_1",
+            "to": "loops_2",
+            "label": "失败且可重试"
+          },
+          {
+            "from": "loops_2",
+            "to": "loops_0",
+            "label": "程序更新计数"
+          },
+          {
+            "from": "loops_1",
+            "to": "loops_3",
+            "label": "通过或达上限"
+          }
+        ]
+      }
+    },
+    {
+      "id": "control",
+      "title": "持久化、人工审核与恢复",
+      "purpose": "需要时保存业务执行进度，停下让人决定。",
+      "parts": "存储、会话标识、暂停点、批准、拒绝、恢复",
+      "question": "哪些动作必须交给人来决定？",
+      "acceptance": "采用审核时批准与拒绝都有路径；不采用有理由。",
+      "status": "skipped",
+      "decision": "不采用业务持久化和人工审核：没有跨进程恢复或外部写动作。未来加入报名动作时重新设计审核。",
+      "origin": "演示假设",
+      "check": "本例不需要；已说明未来启用条件。",
+      "graph_kind": "教学示意",
+      "graph": {
+        "nodes": [
+          {
+            "id": "control_0",
+            "label": "行动提议",
+            "x": 25,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "control_1",
+            "label": "人工审核",
+            "x": 315,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "control_2",
+            "label": "批准则执行",
+            "x": 25,
+            "y": 185,
+            "kind": "教学结构"
+          },
+          {
+            "id": "control_3",
+            "label": "拒绝则取消",
+            "x": 315,
+            "y": 185,
+            "kind": "教学结构"
+          }
+        ],
+        "edges": [
+          {
+            "from": "control_0",
+            "to": "control_1",
+            "label": ""
+          },
+          {
+            "from": "control_1",
+            "to": "control_2",
+            "label": "批准"
+          },
+          {
+            "from": "control_1",
+            "to": "control_3",
+            "label": "拒绝"
+          }
+        ]
+      }
+    },
+    {
+      "id": "evaluation",
+      "title": "输出检查、评估与观察",
+      "purpose": "用真实用例和可见轨迹检查任务是否完成。",
+      "parts": "校验、用例、预期路径、指标、脱敏日志",
+      "question": "出现哪种结果就算没有完成任务？",
+      "acceptance": "至少覆盖正常、缺输入、无资料、失败、越界。",
+      "status": "active",
+      "decision": "已保存正常与缺主题两条模拟轨迹；无资料、工具超时及越界请求仍需演练，不能称评估完成。",
+      "origin": "演示假设",
+      "check": "正常与缺主题模拟已保存；另外三类用例待演练。",
+      "graph_kind": "教学示意",
+      "graph": {
+        "nodes": [
+          {
+            "id": "evaluation_0",
+            "label": "测试输入",
+            "x": 25,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "evaluation_1",
+            "label": "模拟或真实轨迹",
+            "x": 315,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "evaluation_2",
+            "label": "对照验收标准",
+            "x": 25,
+            "y": 185,
+            "kind": "教学结构"
+          },
+          {
+            "id": "evaluation_3",
+            "label": "通过或修正",
+            "x": 315,
+            "y": 185,
+            "kind": "教学结构"
+          }
+        ],
+        "edges": [
+          {
+            "from": "evaluation_0",
+            "to": "evaluation_1",
+            "label": ""
+          },
+          {
+            "from": "evaluation_1",
+            "to": "evaluation_2",
+            "label": ""
+          },
+          {
+            "from": "evaluation_2",
+            "to": "evaluation_3",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "delivery",
+      "title": "整体设计与实施交接",
+      "purpose": "把模块拼成能讲清、能交给开发者实施的设计。",
+      "parts": "架构、契约、轨迹、测试、未决项、实施计划",
+      "question": "能沿着图讲解一个正常和一个失败请求吗？",
+      "acceptance": "契约与图一致，循环可停，没有阻断项。",
+      "status": "pending",
+      "decision": "本看板展示演示假设。完成剩余测试并导出设计、契约、测试、交接说明后才可标记设计完成。",
+      "origin": "演示假设",
+      "check": "尚未导出全部设计文件。",
+      "graph_kind": "教学示意",
+      "graph": {
+        "nodes": [
+          {
+            "id": "delivery_0",
+            "label": "全部结构决定",
+            "x": 25,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "delivery_1",
+            "label": "完整设计与契约",
+            "x": 315,
+            "y": 35,
+            "kind": "教学结构"
+          },
+          {
+            "id": "delivery_2",
+            "label": "演练与检查",
+            "x": 25,
+            "y": 185,
+            "kind": "教学结构"
+          },
+          {
+            "id": "delivery_3",
+            "label": "实施交接",
+            "x": 315,
+            "y": 185,
+            "kind": "教学结构"
+          }
+        ],
+        "edges": [
+          {
+            "from": "delivery_0",
+            "to": "delivery_1",
+            "label": ""
+          },
+          {
+            "from": "delivery_1",
+            "to": "delivery_2",
+            "label": ""
+          },
+          {
+            "from": "delivery_2",
+            "to": "delivery_3",
+            "label": ""
+          }
+        ]
+      }
+    }
+  ],
+  "agent_graph": {
+    "nodes": [
+      {
+        "id": "START",
+        "label": "开始",
+        "x": 330,
+        "y": 35,
+        "kind": "入口"
+      },
+      {
+        "id": "validate",
+        "label": "检查输入",
+        "x": 330,
+        "y": 175,
+        "kind": "规则"
+      },
+      {
+        "id": "ask",
+        "label": "追问学习主题",
+        "x": 35,
+        "y": 335,
+        "kind": "回应"
+      },
+      {
+        "id": "search",
+        "label": "查询课程目录",
+        "x": 330,
+        "y": 335,
+        "kind": "工具"
+      },
+      {
+        "id": "error",
+        "label": "说明查询错误",
+        "x": 35,
+        "y": 525,
+        "kind": "回应"
+      },
+      {
+        "id": "missing",
+        "label": "说明资料不足",
+        "x": 330,
+        "y": 525,
+        "kind": "回应"
+      },
+      {
+        "id": "answer",
+        "label": "生成带出处的回答",
+        "x": 625,
+        "y": 525,
+        "kind": "模型"
+      },
+      {
+        "id": "END",
+        "label": "本轮结束",
+        "x": 330,
+        "y": 745,
+        "kind": "出口"
+      }
+    ],
+    "edges": [
+      {
+        "from": "START",
+        "to": "validate",
+        "label": "输入"
+      },
+      {
+        "from": "validate",
+        "to": "ask",
+        "label": "缺主题"
+      },
+      {
+        "from": "validate",
+        "to": "search",
+        "label": "完整"
+      },
+      {
+        "from": "search",
+        "to": "error",
+        "label": "error 非空"
+      },
+      {
+        "from": "search",
+        "to": "missing",
+        "label": "无资料"
+      },
+      {
+        "from": "search",
+        "to": "answer",
+        "label": "有资料"
+      },
+      {
+        "from": "ask",
+        "to": "END",
+        "label": "下轮重新输入"
+      },
+      {
+        "from": "error",
+        "to": "END",
+        "label": "失败结束"
+      },
+      {
+        "from": "missing",
+        "to": "END",
+        "label": "不足说明"
+      },
+      {
+        "from": "answer",
+        "to": "END",
+        "label": "完成"
+      }
+    ]
+  },
+  "trace_kind": "课堂模拟 · 非真实模型运行",
+  "trace": [
+    {
+      "run": "正常请求 · 模拟",
+      "step": 1,
+      "node": "validate",
+      "input": {
+        "question": "我想学 Python，有什么入门课？",
+        "topic": "Python"
+      },
+      "update": {},
+      "output": "进入查询目录",
+      "basis": "topic 非空"
+    },
+    {
+      "run": "正常请求 · 模拟",
+      "step": 2,
+      "node": "search",
+      "input": {
+        "topic": "Python"
+      },
+      "update": {
+        "documents": [
+          {
+            "name": "Python 入门",
+            "source": "课堂目录 A"
+          }
+        ],
+        "error": ""
+      },
+      "output": "查到 1 条课堂资料",
+      "basis": "模拟课程目录匹配"
+    },
+    {
+      "run": "正常请求 · 模拟",
+      "step": 3,
+      "node": "answer",
+      "input": "Python 入门，课堂目录 A",
+      "update": {
+        "answer": "可考虑 Python 入门；适合从基础语法开始学习。来源：课堂目录 A。"
+      },
+      "output": "课程、理由、出处",
+      "basis": "根据模拟资料整理；未调用真实模型"
+    },
+    {
+      "run": "正常请求 · 模拟",
+      "step": 4,
+      "node": "END",
+      "input": "已形成带出处回答",
+      "update": {},
+      "output": "本轮结束",
+      "basis": "成功路径结束"
+    },
+    {
+      "run": "缺主题请求 · 模拟",
+      "step": 1,
+      "node": "validate",
+      "input": {
+        "question": "推荐一门课。",
+        "topic": ""
+      },
+      "update": {},
+      "output": "进入追问",
+      "basis": "topic 为空，不调用查询工具"
+    },
+    {
+      "run": "缺主题请求 · 模拟",
+      "step": 2,
+      "node": "ask",
+      "input": "学习主题缺失",
+      "update": {
+        "answer": "你想学习什么主题？"
+      },
+      "output": "等待用户在下一轮补充",
+      "basis": "缺信息出口"
+    },
+    {
+      "run": "缺主题请求 · 模拟",
+      "step": 3,
+      "node": "END",
+      "input": "追问已输出",
+      "update": {},
+      "output": "本轮结束；下轮重新输入",
+      "basis": "本例没有使用中断恢复"
+    }
+  ],
+  "open_questions": [
+    "阻断：尚未演练无资料、工具失败和越界请求。",
+    "阻断：尚未导出完整设计交接文件。",
+    "实施待办：选择模型供应商并验证真实接口能力。"
+  ],
+  "implementation": {
+    "status": "未开始",
+    "verification": "本示例只渲染教学设计和模拟数据，没有安装、运行 LangChain/LangGraph 或调用模型。"
+  }
+}
