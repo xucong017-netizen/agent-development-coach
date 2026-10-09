@@ -1611,7 +1611,7 @@
     "status": "生成中",
     "verification": "仅课堂模板查询函数已在本地真实执行；模型与 LangGraph 尚未接入，业务轨迹仍为模拟。"
   },
-  "teaching_version": "1.1.0",
+  "teaching_version": "1.2.0",
   "file_catalog": [
     {
       "path": "agent-design/agent-design.md",

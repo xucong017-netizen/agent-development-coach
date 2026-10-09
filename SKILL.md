@@ -1,9 +1,9 @@
 ---
 name: agent-development-coach
 description: 面向零开发经验学员，用中文逐步讲解、可视化展示并共同设计 LangChain 和 LangGraph 智能体；适用于从零设计、课堂演示、继续学习和按结构生成代码。
-description_zh: 零基础智能体开发教练：逐结构展示实际文件、内容和代码用途，配合图示、检查和进度保存。
+description_zh: 零基础智能体开发教练：逐结构展示实际文件与代码讲解，配合可自动刷新、编辑并同步项目的本地 HTML 工作台。
 description_en: Guide beginners through LangChain and LangGraph agent design with component explanations, diagrams, checkpoints, and optional Python implementation.
-version: 1.1.0
+version: 1.2.0
 author: 用户自定义
 ---
 
@@ -18,6 +18,7 @@ author: 用户自定义
 3. 默认采用**学员共创模式**，先填写当前结构，再展示本步实际设计文件；已有代码则读出来逐段讲解。用户要开发或代码教学时，为已确定结构逐步生成对应文件并当场展示，不把全部代码推迟到最后。明确选择“只做设计”时展示设计正文，不强加 Python。没有 API Key 可使用明确标注的本地模拟。
 4. 只在用户尚未给出场景时，用“课程咨询助手”作为明确标注的暂定案例。演示资料和运行结果必须注明模拟；不能替用户确认需求。
 5. 读取 [课程模块](references/curriculum.md) 当前模块；不要一次把整份课程灌输给学员。读取 [项目与交付格式](references/project-contract.md) 初始化进度，复制 [进度模板](templates/teaching-state.json) 到学员项目中，保留技能包自身文件。
+6. 初始化或恢复项目后按 [本地教学工作台](references/workbench.md) 启动独立 HTML 界面。默认本地使用，与该项目文件同步。每轮开始重读网页可能修改的内容；每步写回实际文件、讲解记录与图，使网页自动显示成果。工作台不能替代聊天中的引导和检查。
 
 ## 三种教学模式
 
@@ -54,9 +55,15 @@ LangChain 提供模型、消息、工具和标准智能体构建能力。LangGra
 
 ## 可视化与进度保存
 
-每步至少提供一张可理解的局部图。优先在聊天中给 Mermaid；若宿主无法渲染，提供 Unicode 方框与箭头，并在有文件与 Python 能力时生成离线 HTML 看板。
+每步至少提供一张可理解的局部图。聊天可用 Mermaid 或 Unicode 方框与箭头；有文件与 Python 能力时，同时启动本地 HTML 工作台，呈现结构讲解、实际文件、代码解释、业务架构与运行轨迹。
 
-用技能目录中的脚本渲染项目进度：
+```text
+python "<技能目录>/scripts/workbench.py" --project "<项目目录>" --port 8766 --open
+```
+
+工作台直接读取项目，每 2.5 秒检查更新，网页保存可写回设计进度和文本文件。具体启动、冲突恢复、备份与每步同步规则见 [本地教学工作台](references/workbench.md)。网页改动图是设计草稿；复核相关契约与代码后才继续教学。
+
+需要静态快照时仍可渲染原离线看板：
 
 ```text
 python "<技能目录>/scripts/render_board.py" "<项目目录>/agent-design/teaching-state.json" --output "<项目目录>/agent-design/design-board.html"
@@ -64,7 +71,7 @@ python "<技能目录>/scripts/render_board.py" "<项目目录>/agent-design/tea
 
 用宿主实际能力打开或链接 HTML，不假定存在 Codex 专属工具、浏览器插件或联网图形服务。没有 Python 时继续用聊天图示；没有写文件能力时输出可复制的进度 JSON 和设计正文，明确说明尚未保存。
 
-每次改变设计都更新 `teaching-state.json`、相关模块结论及 `agent_graph`；能渲染时刷新看板。看板中的学习模块图与智能体运行总图是两种不同图。学习进度独立于智能体的业务运行状态，不能混用。看板是教学展示，不是拖拽编程平台，也不会调用模型。
+每次改变设计都更新 `teaching-state.json`、相关模块结论及 `agent_graph`。工作台自动读取成果；静态看板需重新生成。学习模块图与智能体运行总图是两种不同图。学习进度独立于智能体的业务运行状态，不能混用。图编辑不会自动生成业务代码，轨迹回放不会调用模型。
 
 ## 完成标准
 

@@ -6,20 +6,45 @@
 
 每一步都遵循：**说明作用 → 拆解结构 → 图示 → 自然语言填写 → 展示实际文件与内容 → 逐段讲解 → 输入输出检查 → 保存进度**。完成后导出完整智能体设计与实施交接材料。
 
-## v1.1.0：看得见每一步写了什么
+## v1.2.0：可同步项目的本地教学工作台
 
-本版修复“步骤做了却没有展示具体内容”的教学缺口。每步必须读回实际文件，在聊天中展示本次正文或代码；说明各文件用途与调用关系；逐块解释输入、动作、输出、设计理由及改错后影响；给检查命令和实际或预期结果，再进入下一步。
+增加独立 HTML 工作台，让学员随时看到实际成果，还能修改设计、笔记、文件内容和架构图。Python 3.10+ 标准库启动；无需 Node、网页依赖、模型账户或联网图形库。
 
-开发教学在当前结构确定后立即实现并讲解，不把代码全部推迟到课程最后。仅设计模式也展示实际任务说明、提示词、字段表和契约正文。看板增加文件地图、完整内容、代码分块讲解和执行证据；“已写入”与“已展示”分别记录。
+| 视图 | 展示与操作 |
+| --- | --- |
+| 结构课堂 | 15 个结构的功能、组成、局部图、实际正文/代码、逐段解释、输入输出、检查证据、设计决定和笔记 |
+| 文件与代码 | 实际文件内容、文件职责、调用关系、Python 函数与类位置；搜索、编辑、保存、单文件导出 |
+| 架构地图 | 业务节点、边和条件；改节点名称/职责、增删节点和连线、拖动位置 |
+| 运行演练 | 回放已保存的轨迹，高亮当前节点，显示输入、状态更新、输出和依据 |
+| 项目全貌 | 结构与讲解进度、全部文件职责、整体决定、未决项、验证状态、网页保存记录、完整进度 JSON |
 
-附带可独立运行的模拟目录查询示例，包含 tools.py、课程 JSON 和 15 模块的示例设计正文。函数查询已本地验证，真实模型与 LangGraph 尚未接通。
+工作台每 2.5 秒读取项目变化：WorkBuddy 写完一步，网页自动刷新；网页有未保存草稿时提示新成果并保留输入。网页保存文档/代码写回对应文件，保存设计/笔记/图写回 `teaching-state.json`。原内容保存在项目 `.workbench/backups/`；同时修改同一内容会提示冲突，拒绝覆盖新成果。
+
+新增本地工作台不依赖 WorkBuddy 的特定浏览器插件。Skill 每轮重读网页修改，复核后同步设计正文、契约与实现，再补充讲解。v1.1.0 的“读回真实文件、每段代码讲清楚、逐结构实现”规则继续保留。
+
+### 在另一台电脑启动
+
+1. 下载下方**本地工作台 ZIP**，完整解压到普通文件夹。需要 Python 3.10+。
+2. Windows 双击 `启动工作台.bat`，浏览器打开 `http://127.0.0.1:8766`；终端窗口保持运行。默认展示附带的课堂模拟项目。
+3. 使用自己的项目：把含 `agent-design/teaching-state.json` 的项目文件夹拖到启动器上，或在终端运行下面的命令。
+
+```text
+python scripts/workbench.py --project "你的项目目录" --port 8766 --open
+```
+
+Mac/Linux 使用上述 Python 命令。端口已被占用时改为 `--port 8767`。自己的项目进度由新版 Skill 初始化或读取；不要用示例进度覆盖旧项目。单独安装 Skill 时脚本路径应指向实际技能目录。
+
+网页版的设计决定保存在进度 JSON，需要 WorkBuddy 将其落实到正文和代码。代码编辑不会自动执行，架构编辑不会自动生成 LangGraph 代码。修改后在 WorkBuddy 说：“读取网页修改，检查相关结构和代码，更新讲解后继续。”
+
+独立 HTML 文件可以立即离线浏览、编辑浏览器草稿和导出成果；**需要本地服务才能自动刷新并写回项目**。导入 JSON 只导入进度 state，不覆盖代码文件。详细同步约定见 [工作台说明](references/workbench.md)。
 
 ### 更新旧项目
 
 下载新 ZIP，在 WorkBuddy 的技能管理中更新原技能，或用当前版本提供的替换/重新导入入口。避免同时启用两个同名版本。保留原学员项目及进度，回到原对话使用：
 
 ```text
-使用 agent-development-coach 1.1.0。
+使用 agent-development-coach 1.2.0。
+读取原学员项目并启动本地 HTML 教学工作台，与项目文件同步。
 不要重置我的项目，先读取之前已生成的文件。
 从当前步骤开始补讲：展示实际内容、文件职责、每段代码的输入输出和调用关系。
 之前只标记完成但没有展示的步骤也请补讲，再继续开发。
@@ -29,8 +54,10 @@
 
 ## 下载与安装
 
-- [下载 v1.1.0 技能 ZIP](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.1.0/agent-development-coach.zip)
-- [查看发布页](https://github.com/xucong017-netizen/agent-development-coach/releases/tag/v1.1.0)
+- [下载 v1.2.0 技能 ZIP](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.2.0/agent-development-coach.zip)
+- [查看发布页](https://github.com/xucong017-netizen/agent-development-coach/releases/tag/v1.2.0)
+- [下载本地工作台 ZIP（含启动器和示例项目）](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.2.0/local-agent-workbench.zip)
+- [下载独立 HTML 成果示例](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.2.0/agent-workbench.html)
 - [仓库内 ZIP 备份](dist/agent-development-coach.zip)
 - [课堂示例看板](examples/classroom-board.html)：下载后用浏览器离线打开，GitHub 文件页不会直接执行 HTML。
 
@@ -38,7 +65,7 @@
 2. 进入“添加技能”，通过当前版本的上传/导入入口选择下载的 ZIP。
 3. 安装并启用，在对话中选择该技能，或明确说“使用 agent-development-coach 技能”。
 
-ZIP 根目录直接包含 `SKILL.md`，附带 `references/`、`templates/`、`scripts/`，不需要再次压缩。只上传单个 SKILL.md 会缺少课程资料和看板脚本。
+ZIP 根目录直接包含 `SKILL.md`，附带 `references/`、`templates/`、`scripts/`、`assets/`，不需要再次压缩。只上传单个 SKILL.md 会缺少课程资料和看板脚本。
 
 元信息根据 [WorkBuddy 官方技能规范](https://open.workbuddy.cn/docs/skill) 编写。当前仓库不假定具体技能安装路径，也不会自动安装框架、注册账户或部署服务。
 
@@ -127,11 +154,11 @@ python scripts/render_board.py templates/example-state.json --output classroom-b
 python scripts/render_board.py templates/teaching-state.json --output blank-board.html
 ```
 
-脚本使用 Python 3 标准库，没有第三方依赖。没有 Python 时仍可用聊天中的图示上课。学员进度由 WorkBuddy 保存到项目的 `agent-design/teaching-state.json`；网页只展示已保存的数据，更新 JSON 后需要重新生成看板。
+脚本使用 Python 3 标准库，没有第三方依赖。没有 Python 时仍可用聊天中的图示上课。学员进度由 WorkBuddy 保存到项目的 `agent-design/teaching-state.json`。此处的传统静态看板更新 JSON 后需要重新生成；新版本地工作台自动读取项目，无需重新生成 HTML。
 
 示例看板只保存正常请求与缺主题请求两条**模拟轨迹**。无资料、工具失败、越界请求和完整文件交付仍需继续检查；它不是已经运行或评估通过的真实智能体。
 
-1.1.0 的看板默认展开工具模块，完整展示 tools.py 与 course_catalog.json，并按导入、加载目录、查询函数和运行入口讲解。示例整体设计仍在进行中；只有独立查询函数的结果为真实本地执行，业务图轨迹仍为模拟。
+传统看板默认展开工具模块，完整展示 tools.py 与 course_catalog.json，并按导入、加载目录、查询函数和运行入口讲解。示例整体设计仍在进行中；只有独立查询函数的结果为真实本地执行，业务图轨迹仍为模拟。
 
 ## 最终设计产物
 

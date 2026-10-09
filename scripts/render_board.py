@@ -48,6 +48,8 @@ def validate(data):
         raise ValueError('Keep all 15 teaching modules')
     ids = set()
     for m in modules:
+        if not isinstance(m, dict):
+            raise ValueError('Each teaching module must be an object')
         if not ID.fullmatch(str(m.get('id', ''))) or m['id'] in ids:
             raise ValueError('Invalid or duplicate module ID')
         ids.add(m['id'])
