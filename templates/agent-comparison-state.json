@@ -94,26 +94,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "助手收到范围外的任务，应怎么做？",
-        "options": [
-          "明确边界并说明不能处理",
-          "假装已经完成"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "io",
@@ -198,26 +183,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "固定工作流下一步由谁决定？",
-        "options": [
-          "预先定义的规则",
-          "每次都由模型自由决定"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "model",
@@ -290,26 +260,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "框架运行加模拟模型证明了什么？",
-        "options": [
-          "框架和本地流程能跑通",
-          "真实模型一定可靠"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "prompt",
@@ -394,26 +349,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "提示词的主要作用是什么？",
-        "options": [
-          "指导模型的任务和回答约束",
-          "代替所有程序校验"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "tools",
@@ -498,7 +438,7 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         },
@@ -579,22 +519,7 @@
             "actual": "真实本地查询成功读取了此文件；资料仍是模拟数据。"
           }
         }
-      ],
-      "exercise": {
-        "question": "工具查询失败，应走哪条路？",
-        "options": [
-          "失败处理并如实说明",
-          "把失败当成找到答案"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "knowledge",
@@ -679,23 +604,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "说明本步的作用",
-        "options": [],
-        "correct": null,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "memory",
@@ -768,26 +681,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "长期记忆和单次运行状态一样吗？",
-        "options": [
-          "不同，需要明确保存范围和生命周期",
-          "一样，自动永久保存"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "state",
@@ -872,26 +770,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "下游节点读取的字段需要什么？",
-        "options": [
-          "输入或上游明确提供",
-          "只写字段名称就能有数据"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "nodes",
@@ -964,7 +847,7 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         },
@@ -1074,22 +957,7 @@
             "actual": "以点击运行后保存的证据为准。"
           }
         }
-      ],
-      "exercise": {
-        "question": "一个节点应该记录什么？",
-        "options": [
-          "读什么、做什么、写什么",
-          "只有名称即可"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "edges",
@@ -1174,26 +1042,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "只有节点没有连线，图能完整运行吗？",
-        "options": [
-          "不能，必须连接入口和出口",
-          "能，框架会猜路线"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "routing",
@@ -1283,26 +1136,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "条件分支需要考虑什么？",
-        "options": [
-          "正常、异常和兜底出口",
-          "只考虑成功分支"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "loops",
@@ -1392,26 +1230,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "循环需要什么才能安全结束？",
-        "options": [
-          "次数上限和真实退出分支",
-          "图上画一个出口就足够"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "control",
@@ -1496,23 +1319,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "说明本步的作用",
-        "options": [],
-        "correct": null,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "evaluation",
@@ -1597,26 +1408,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "预期结果可以算实际验证吗？",
-        "options": [
-          "不可以，必须保留真实执行结果",
-          "可以，只要看起来合理"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "delivery",
@@ -1701,26 +1497,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "修改设计以后，原代码是否自动同步？",
-        "options": [
-          "不会，必须实现并重新验证",
-          "会，保存图就等于改代码"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     }
   ],
   "agent_graph": {
@@ -1787,7 +1568,7 @@
     "status": "已提供可运行框架示例，待课堂实测",
     "verification": "图中节点均绑定项目实际函数；模拟、框架和真实模型证据分开。"
   },
-  "teaching_version": "1.4.0",
+  "teaching_version": "1.5.0",
   "file_catalog": [
     {
       "path": "agent-design/agent-design.md",
@@ -2086,7 +1867,7 @@
         "evaluation",
         "delivery"
       ],
-      "result": "检查异常路径、真实文件和理解记录，导出设计与未验证项"
+      "result": "检查异常路径、实际文件与运行证据，交付完整设计"
     }
   ],
   "sync": {
@@ -2094,5 +1875,7 @@
     "reviews": []
   },
   "learning_stage": "expand",
-  "runs": []
+  "runs": [],
+  "design_requests": [],
+  "design_changes": []
 }

@@ -231,7 +231,7 @@ def render(data):
                      f'<small>来源：{esc(m.get("origin") or "尚未选择")}</small></div>'
                      f'<p class="caption">{PRESENTATIONS[m.get("presentation_status", "pending")]}</p>'
                      f'{artifacts_html(m)}'
-                     f'<p><b>小检查：</b>{esc(m.get("check") or m.get("acceptance", "尚未检查"))}</p>'
+                     f'<p><b>业务验证依据：</b>{esc(m.get("check") or m.get("acceptance", "尚未检查"))}</p>'
                      '</div></details>')
     traces = data.get('trace', [])
     # JSON cannot close the script tag, even if learner text contains HTML.

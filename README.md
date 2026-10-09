@@ -1,43 +1,58 @@
 # 零基础智能体开发教练 · agent-development-coach
 
-适用于 WorkBuddy 的中文 Skill。逐步帮助没有开发经验的学员设计 LangChain / LangGraph 智能体，展示实际文件、代码、逐段解释和结构图。内置本地 HTML 工作台，调用 Skill 时沿用自动启动方式，项目文件双向同步。
+面向 WorkBuddy 的中文 Skill，让没有开发经验的使用者用自然语言逐步设计 LangChain / LangGraph 智能体。内置本地「智能体设计台」，调用 Skill 时自动启动，设计、图示和实际项目文件同步更新。
 
-## 下载与调用
+## 下载与使用
 
-下载 [v1.4.0 技能包](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.4.0/agent-development-coach.zip)，在 WorkBuddy 的技能管理中安装 ZIP；不同宿主版本若使用目录导入，解压后选择含 SKILL.md 的 agent-development-coach 目录。
+下载 [v1.5.0 技能包](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.5.0/agent-development-coach.zip)，按 WorkBuddy 当前的技能导入方式安装。使用目录导入时选择包含 SKILL.md 的目录。已有项目继续读取原进度和代码，不用示例覆盖。
 
-首次：“使用 agent-development-coach，带我做一个课程咨询智能体。我没有开发经验。”
+首次调用：“使用 agent-development-coach，带我做一个课程咨询智能体。我没有开发经验。”
 
-继续：“使用 agent-development-coach，继续当前项目，先读取网页改动和实际文件。”
+继续：“使用 agent-development-coach，继续当前项目，读取看板改动和待处理需求。”
 
-普通学员只安装技能包，工作台已在里面。可选 local-agent-workbench.zip 是独立调试包。agent-workbench.html 是离线成果副本，不能实时写回项目。启动脚本保持 v1.3.0 机制，第 8 项 WorkBuddy 真机安装、权限和启动集成由使用者测试。
+普通使用只需技能包，页面和启动器已包含在里面。local-agent-workbench.zip 是可选独立调试包；agent-workbench.html 是离线成果副本，不能实时写回项目。启动脚本沿用 v1.3.0；WorkBuddy 真机安装、权限和启动集成仍由使用者测试。
 
-## v1.4.0 的七项改进
+## v1.5.0：围绕设计任务重新设计看板
 
-1. 可执行设计验收：查结构决定、实际文件和内容、字段来源、入口出口、循环上限、分支、理解记录与阻断项；不允许空图被标完成。
-2. 唯一结构化设计：课堂决定与架构图保存到 design，自动生成摘要、契约、JSON 和 Mermaid 图。显示设计同步与代码待应用状态。
-3. 四阶段教学：定义任务 → 最小闭环 → 扩展能力 → 验收交付；保留全部 15 个结构，代码模式在早期运行实际框架。
-4. 固定工作流与动态智能体对比：同一业务任务的两种决策方式、图和示例；动态案例包含模型/工具循环及匹配的 ToolMessage ID。
-5. 生成、展示、理解、执行分别记录。学生答错会收到反馈，概念题正确后还要由教练核对对自己项目的解释。
-6. 按依赖精确复核：移动节点不重置进度，文字改动复核讲解，业务契约/连线/代码变化复核相关结构。保留旧答案与原因。
-7. 三种运行证据：设计模拟、真实 LangGraph+模拟模型、真实框架+真实模型。逐节点回放输入、更新、完整前后状态、输出、错误、耗时和实际代码位置。
+- 主看板呈现当前任务、整体执行图、具体设计决定、节点职责和这次变化，文件、运行和交付分别放到对应视图。
+- 15 个结构均说明“接收什么 → 实际做什么 → 产生什么”，配合明确标注的课程例子和实际成果，避免只给抽象名词。
+- 执行流程显示真实节点、连线、分支与出口；组成视图显示模型、提示词、工具等全部设计决定。点击节点可查看读写字段、后续步骤和实际源码位置。
+- 每次实际设计变化自动保留前后版本，绿色表示新增、金色表示更新、红色表示移除。坐标移动不产生业务变化记录；配置修改在组成卡中体现。
+- 可直接编辑设计决定、实际文本文件和结构图。新增环节会重接流程，契约或实现未补齐时明确显示待办，不能冒充已经运行。
+- 自然语言设计需求保存到项目，Skill 每轮优先读取、修改实际设计与图，再记录处理结果。页面自动检测并刷新成果。
+- 移除理解检查和学习笔记，不以答题作为继续设计或完成设计的门槛；保留对实际成果、业务路径和代码一致性的验证。
+- 深绿导航、浅色画布、清晰的卡片层次与响应式布局，图支持完整适配、缩放和前后对照；不依赖外部字体或 CDN。
 
-## 环境与数据
+![智能体设计台的真实界面](https://raw.githubusercontent.com/xucong017-netizen/agent-development-coach/main/docs/images/design-studio.png)
 
-本地设计工作台只需 Python 3.10+，标准库即可运行。代码实践使用项目 Python 环境安装 templates/requirements-runtime.txt，工作台也用该 Python 启动。已验证版本为 LangGraph 1.2.14、langchain-openai 1.7.0；LangChain 标准 create_agent 路线由教练按实际场景生成，附带动态对比使用自定义 LangGraph 和 LangChain 消息类型。
+## 设计需求如何改变图
 
-真实模型在运行时环境配置 OPENAI_API_KEY 和可选 OPENAI_MODEL。没有密钥可用框架模式；不得把模拟回答称为真实模型效果。不把密钥写进 Skill、网页和项目进度。
+在 WorkBuddy 中直接要求：“给查询之后加一个人工审核步骤，并更新看板。”Skill 按任务修改节点、连线、契约和实际文件，执行同步后，正在打开的看板自动更新图和变化列表。
 
-网页每 2.5 秒检查文件更新；有草稿时保留草稿，写入有备份和版本冲突检查。生成的设计文件只读，修改课堂决定、架构地图或契约再同步。图修改不自动改业务代码，执行成功也不自动标学生理解通过。
+也可在看板填写“希望这次设计怎样改变？”并提交，再在 WorkBuddy 说“处理看板新需求”。网页没有独立模型或后台唤醒 WorkBuddy 的接口，提交只保存待处理需求；下次 Skill 执行后才显示真实设计成果。提示词等配置变化不虚构额外执行节点，应在组成视图查看。
 
-旧项目会保留进度和代码。旧手写文档作为历史记录，教练迁移到唯一规范后更新实际成果讲解；同名手写文件冲突时拒绝覆盖。
+## 保留的开发能力
+
+四阶段路线：定义任务 → 最小闭环 → 按需要扩展 → 验收交付，保留全部 15 个结构。design 是唯一规范，自动生成摘要、契约、JSON 和 Mermaid 图；实际正文、完整代码、逐段解释、文件职责和调用关系均可查看。
+
+支持固定工作流与模型/工具动态循环对比；运行区分设计模拟、真实 LangGraph 搭配模拟模型、真实框架搭配真实模型。轨迹保存节点前后状态、输入、更新、输出、错误、耗时、源码位置和源文件哈希。
+
+## 本地环境与同步
+
+设计工作台只需 Python 3.10+ 标准库。代码实践由 Skill 在项目 Python 环境安装 templates/requirements-runtime.txt，并使用同一环境启动。真实模型从环境读取 OPENAI_API_KEY 和可选 OPENAI_MODEL；密钥不写入网页、进度或日志。
+
+页面每 2.5 秒检查更新。有网页草稿时保留草稿并提示项目更新；保存有备份和版本冲突检查。自动生成的文档只读，修改对应设计再同步。图保存不自动实现代码；实施待应用项与实际运行证据单独记录。旧项目的笔记和答题数据保留为历史，不参与当前设计验收。
 
 ## 验证范围
 
-已用实际 LangGraph 测试正常、缺参、无资料、工具失败、越界和类型错误；测试动态工具循环、源代码与状态轨迹、布局不复核、业务变更精确依赖、理解错题、文档同步、验收拒绝、冲突与路径边界。真实模型效果未调用验证；WorkBuddy 真机测试由使用者完成。
+实际框架测试覆盖正常、类型错误、缺参、无资料、工具失败、越界和动态工具循环；验证文档同步、真实图差异、需求排队与应用、不生成答题字段、旧答题不阻挡验收、文件冲突与路径边界。浏览器检查节点详情、代码跳转、设计决定保存、宿主修改后自动刷新、前后图、直接插入环节和响应式布局。真实模型质量与 WorkBuddy 真机环境仍需使用者测试。
 
-技能入口：[SKILL.md](SKILL.md)。完整教学与操作协议：[learning-protocol.md](references/learning-protocol.md)。下载包在 [Releases](https://github.com/xucong017-netizen/agent-development-coach/releases)。
+技能入口：[SKILL.md](SKILL.md)。设计台交互：[ui-workflow.md](references/ui-workflow.md)。教学与同步：[learning-protocol.md](references/learning-protocol.md)。全部下载：[Releases](https://github.com/xucong017-netizen/agent-development-coach/releases)。
 
 ## 搜索关键词
 
 `agent-development-coach`、`xucong017-netizen agent-development-coach`、`WorkBuddy LangGraph 零基础 智能体 教学 Skill`、`LangChain LangGraph 可视化 开发 工作台`。
+
+## 开发者验证
+
+项目 Python 环境安装 templates/requirements-runtime.txt 后，运行 `python -m unittest discover -s tests -v` 可执行 16 项设计、同步、需求队列与真实框架测试。

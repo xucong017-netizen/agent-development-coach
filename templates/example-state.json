@@ -94,26 +94,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "助手收到范围外的任务，应怎么做？",
-        "options": [
-          "明确边界并说明不能处理",
-          "假装已经完成"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "io",
@@ -198,26 +183,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "固定工作流下一步由谁决定？",
-        "options": [
-          "预先定义的规则",
-          "每次都由模型自由决定"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "model",
@@ -290,26 +260,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "框架运行加模拟模型证明了什么？",
-        "options": [
-          "框架和本地流程能跑通",
-          "真实模型一定可靠"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "prompt",
@@ -394,26 +349,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "提示词的主要作用是什么？",
-        "options": [
-          "指导模型的任务和回答约束",
-          "代替所有程序校验"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "tools",
@@ -498,7 +438,7 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         },
@@ -579,22 +519,7 @@
             "actual": "真实本地查询成功读取了此文件；资料仍是模拟数据。"
           }
         }
-      ],
-      "exercise": {
-        "question": "工具查询失败，应走哪条路？",
-        "options": [
-          "失败处理并如实说明",
-          "把失败当成找到答案"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "knowledge",
@@ -679,23 +604,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "说明本步的作用",
-        "options": [],
-        "correct": null,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "memory",
@@ -768,26 +681,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "长期记忆和单次运行状态一样吗？",
-        "options": [
-          "不同，需要明确保存范围和生命周期",
-          "一样，自动永久保存"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "state",
@@ -872,26 +770,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "下游节点读取的字段需要什么？",
-        "options": [
-          "输入或上游明确提供",
-          "只写字段名称就能有数据"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "nodes",
@@ -964,7 +847,7 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         },
@@ -1074,22 +957,7 @@
             "actual": "实际执行 validate、search、answer；缺主题执行 validate、ask。源文件哈希与完整状态见 runs/trace。"
           }
         }
-      ],
-      "exercise": {
-        "question": "一个节点应该记录什么？",
-        "options": [
-          "读什么、做什么、写什么",
-          "只有名称即可"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "edges",
@@ -1174,26 +1042,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "只有节点没有连线，图能完整运行吗？",
-        "options": [
-          "不能，必须连接入口和出口",
-          "能，框架会猜路线"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "routing",
@@ -1283,26 +1136,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "条件分支需要考虑什么？",
-        "options": [
-          "正常、异常和兜底出口",
-          "只考虑成功分支"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "loops",
@@ -1392,26 +1230,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "循环需要什么才能安全结束？",
-        "options": [
-          "次数上限和真实退出分支",
-          "图上画一个出口就足够"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "control",
@@ -1496,23 +1319,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "说明本步的作用",
-        "options": [],
-        "correct": null,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "evaluation",
@@ -1597,26 +1408,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "预期结果可以算实际验证吗？",
-        "options": [
-          "不可以，必须保留真实执行结果",
-          "可以，只要看起来合理"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     },
     {
       "id": "delivery",
@@ -1701,26 +1497,11 @@
           "verification": {
             "status": "设计待课堂核对",
             "command": "design_engine.py --audit",
-            "expected": "设计、理解与实际文件一致",
+            "expected": "设计、契约与实际文件一致",
             "actual": "未宣称全项目通过验收。"
           }
         }
-      ],
-      "exercise": {
-        "question": "修改设计以后，原代码是否自动同步？",
-        "options": [
-          "不会，必须实现并重新验证",
-          "会，保存图就等于改代码"
-        ],
-        "correct": 0,
-        "feedback": "回看本步的职责、输入输出和异常处理，再试一次。"
-      },
-      "mastery": {
-        "status": "pending",
-        "answer": null,
-        "reason": "",
-        "feedback": ""
-      }
+      ]
     }
   ],
   "agent_graph": {
@@ -1872,7 +1653,7 @@
   "trace_kind": "课堂模拟 · 非真实模型运行",
   "trace": [
     {
-      "run": "077840b7-7a47-4965-b4e2-58e987800e40",
+      "run": "4069f910-5985-4985-b685-c3859a7171a0",
       "step": 1,
       "node": "validate",
       "mode": "framework",
@@ -1918,7 +1699,7 @@
       "basis": "实际节点函数执行"
     },
     {
-      "run": "077840b7-7a47-4965-b4e2-58e987800e40",
+      "run": "4069f910-5985-4985-b685-c3859a7171a0",
       "step": 2,
       "node": "search",
       "mode": "framework",
@@ -1972,12 +1753,12 @@
         "function": "search_catalog",
         "line": 18
       },
-      "duration_ms": 0.13,
+      "duration_ms": 0.16,
       "error": "",
       "basis": "实际节点函数执行"
     },
     {
-      "run": "077840b7-7a47-4965-b4e2-58e987800e40",
+      "run": "4069f910-5985-4985-b685-c3859a7171a0",
       "step": 3,
       "node": "answer",
       "mode": "framework",
@@ -2040,7 +1821,7 @@
       "basis": "实际节点函数执行"
     },
     {
-      "run": "e72b5580-22a4-48dc-92aa-bda4c2599b4c",
+      "run": "25d44ef5-744f-4c10-a691-82c88d15ec97",
       "step": 1,
       "node": "validate",
       "mode": "framework",
@@ -2086,7 +1867,7 @@
       "basis": "实际节点函数执行"
     },
     {
-      "run": "e72b5580-22a4-48dc-92aa-bda4c2599b4c",
+      "run": "25d44ef5-744f-4c10-a691-82c88d15ec97",
       "step": 2,
       "node": "ask",
       "mode": "framework",
@@ -2139,7 +1920,7 @@
     "status": "示例已执行真实框架，模型为模拟",
     "verification": "Python 与空主题已实际执行，节点前后状态与代码位置见轨迹。完整六类场景见发布测试记录；真实模型未测试。"
   },
-  "teaching_version": "1.4.0",
+  "teaching_version": "1.5.0",
   "file_catalog": [
     {
       "path": "agent-design/agent-design.md",
@@ -2623,7 +2404,7 @@
         "evaluation",
         "delivery"
       ],
-      "result": "检查异常路径、真实文件和理解记录，导出设计与未验证项"
+      "result": "检查异常路径、实际文件与运行证据，交付完整设计"
     }
   ],
   "sync": {
@@ -2633,7 +2414,7 @@
   "learning_stage": "expand",
   "runs": [
     {
-      "run": "077840b7-7a47-4965-b4e2-58e987800e40",
+      "run": "4069f910-5985-4985-b685-c3859a7171a0",
       "mode": "framework",
       "status": "executed",
       "evidence": "实际 LangGraph；模拟模型",
@@ -2664,7 +2445,7 @@
       }
     },
     {
-      "run": "e72b5580-22a4-48dc-92aa-bda4c2599b4c",
+      "run": "25d44ef5-744f-4c10-a691-82c88d15ec97",
       "mode": "framework",
       "status": "executed",
       "evidence": "实际 LangGraph；模拟模型",
@@ -2686,6 +2467,369 @@
         "source": "",
         "error": "",
         "answer": "请告诉我你想学习的课程主题。"
+      }
+    }
+  ],
+  "design_requests": [],
+  "design_changes": [
+    {
+      "id": "a532eb538cb22333",
+      "time": "2026-10-09T12:28:07.408270+00:00",
+      "summary": "演示案例从 v1.3 到当前的实际结构变化：新增 2 个节点，更新 6 个节点，调整流程连接，更新 3 项设计决定，同步结构契约，更新架构路线",
+      "added": [
+        "invalid",
+        "outside"
+      ],
+      "removed": [],
+      "changed": [
+        "answer",
+        "ask",
+        "error",
+        "missing",
+        "search",
+        "validate"
+      ],
+      "edges_added": [
+        {
+          "from": "validate",
+          "to": "outside",
+          "label": "范围外"
+        },
+        {
+          "from": "invalid",
+          "to": "END",
+          "label": "结束"
+        },
+        {
+          "from": "validate",
+          "to": "invalid",
+          "label": "类型错误"
+        },
+        {
+          "from": "outside",
+          "to": "END",
+          "label": "结束"
+        }
+      ],
+      "edges_removed": [],
+      "edges_changed": [],
+      "decisions": [
+        {
+          "module": "model",
+          "before": "设计模型职责为整理有出处的课程回答，尚未选择真实供应商。先用课堂模拟输出。",
+          "after": "框架模式执行真实 LangGraph，使用明确标注的模拟回答；真实模型只在配置密钥并选择 real 后调用。"
+        },
+        {
+          "module": "tools",
+          "before": "search_courses(topic: string) 返回 items 与 source。无结果 items=[]；失败用 error 区分；只读。",
+          "after": "search_courses(topic) 返回 items 与 source；无结果为 []，失败抛异常。search_catalog 捕获异常后写 error，路由到失败出口；工具只读。"
+        },
+        {
+          "module": "evaluation",
+          "before": "已保存正常与缺主题两条模拟轨迹；无资料、工具超时及越界请求仍需演练，不能称评估完成。",
+          "after": "覆盖正常、类型错误、缺少主题、无资料、工具失败和越界六类输入；保留实际节点执行轨迹和源代码哈希。"
+        }
+      ],
+      "contracts": [
+        "inputs",
+        "outputs",
+        "state_fields",
+        "nodes",
+        "tools",
+        "routes",
+        "tests"
+      ],
+      "before_graph": {
+        "nodes": [
+          {
+            "id": "START",
+            "label": "开始",
+            "x": 330,
+            "y": 35,
+            "kind": "入口"
+          },
+          {
+            "id": "validate",
+            "label": "检查输入",
+            "x": 330,
+            "y": 175,
+            "kind": "规则"
+          },
+          {
+            "id": "ask",
+            "label": "追问学习主题",
+            "x": 35,
+            "y": 335,
+            "kind": "回应"
+          },
+          {
+            "id": "search",
+            "label": "查询课程目录",
+            "x": 330,
+            "y": 335,
+            "kind": "工具"
+          },
+          {
+            "id": "error",
+            "label": "说明查询错误",
+            "x": 35,
+            "y": 525,
+            "kind": "回应"
+          },
+          {
+            "id": "missing",
+            "label": "说明资料不足",
+            "x": 330,
+            "y": 525,
+            "kind": "回应"
+          },
+          {
+            "id": "answer",
+            "label": "生成带出处的回答",
+            "x": 625,
+            "y": 525,
+            "kind": "模型"
+          },
+          {
+            "id": "END",
+            "label": "本轮结束",
+            "x": 330,
+            "y": 745,
+            "kind": "出口"
+          }
+        ],
+        "edges": [
+          {
+            "from": "START",
+            "to": "validate",
+            "label": "输入"
+          },
+          {
+            "from": "validate",
+            "to": "ask",
+            "label": "缺主题"
+          },
+          {
+            "from": "validate",
+            "to": "search",
+            "label": "完整"
+          },
+          {
+            "from": "search",
+            "to": "error",
+            "label": "error 非空"
+          },
+          {
+            "from": "search",
+            "to": "missing",
+            "label": "无资料"
+          },
+          {
+            "from": "search",
+            "to": "answer",
+            "label": "有资料"
+          },
+          {
+            "from": "ask",
+            "to": "END",
+            "label": "下轮重新输入"
+          },
+          {
+            "from": "error",
+            "to": "END",
+            "label": "失败结束"
+          },
+          {
+            "from": "missing",
+            "to": "END",
+            "label": "不足说明"
+          },
+          {
+            "from": "answer",
+            "to": "END",
+            "label": "完成"
+          }
+        ]
+      },
+      "after_graph": {
+        "nodes": [
+          {
+            "id": "START",
+            "label": "开始",
+            "x": 330,
+            "y": 35,
+            "kind": "入口"
+          },
+          {
+            "id": "validate",
+            "label": "检查输入",
+            "x": 330,
+            "y": 175,
+            "kind": "规则"
+          },
+          {
+            "id": "ask",
+            "label": "追问学习主题",
+            "x": 35,
+            "y": 335,
+            "kind": "回应"
+          },
+          {
+            "id": "search",
+            "label": "查询课程目录",
+            "x": 330,
+            "y": 335,
+            "kind": "工具"
+          },
+          {
+            "id": "error",
+            "label": "说明查询错误",
+            "x": 35,
+            "y": 525,
+            "kind": "回应"
+          },
+          {
+            "id": "missing",
+            "label": "说明资料不足",
+            "x": 330,
+            "y": 525,
+            "kind": "回应"
+          },
+          {
+            "id": "answer",
+            "label": "生成带出处的回答",
+            "x": 625,
+            "y": 525,
+            "kind": "模型"
+          },
+          {
+            "id": "END",
+            "label": "本轮结束",
+            "x": 330,
+            "y": 745,
+            "kind": "出口"
+          },
+          {
+            "id": "invalid",
+            "label": "输入类型错误",
+            "kind": "校验出口",
+            "x": 15,
+            "y": 175
+          },
+          {
+            "id": "outside",
+            "label": "任务超出范围",
+            "kind": "边界出口",
+            "x": 635,
+            "y": 175
+          }
+        ],
+        "edges": [
+          {
+            "from": "START",
+            "to": "validate",
+            "label": "输入"
+          },
+          {
+            "from": "validate",
+            "to": "ask",
+            "label": "缺主题"
+          },
+          {
+            "from": "validate",
+            "to": "search",
+            "label": "完整"
+          },
+          {
+            "from": "search",
+            "to": "error",
+            "label": "error 非空"
+          },
+          {
+            "from": "search",
+            "to": "missing",
+            "label": "无资料"
+          },
+          {
+            "from": "search",
+            "to": "answer",
+            "label": "有资料"
+          },
+          {
+            "from": "ask",
+            "to": "END",
+            "label": "下轮重新输入"
+          },
+          {
+            "from": "error",
+            "to": "END",
+            "label": "失败结束"
+          },
+          {
+            "from": "missing",
+            "to": "END",
+            "label": "不足说明"
+          },
+          {
+            "from": "answer",
+            "to": "END",
+            "label": "完成"
+          },
+          {
+            "from": "validate",
+            "to": "invalid",
+            "label": "类型错误"
+          },
+          {
+            "from": "validate",
+            "to": "outside",
+            "label": "范围外"
+          },
+          {
+            "from": "invalid",
+            "to": "END",
+            "label": "结束"
+          },
+          {
+            "from": "outside",
+            "to": "END",
+            "label": "结束"
+          }
+        ]
+      },
+      "before_decisions": {
+        "goal": "帮助学员查询和推荐课程；不替学员报名、不承诺课程效果。成功结果含课程、理由、出处。",
+        "io": "输入 question 与 topic；输出 answer 和 sources。主题缺失则追问并结束本轮。选 LangGraph 自定义分支，模型可用 LangChain 接口。",
+        "model": "设计模型职责为整理有出处的课程回答，尚未选择真实供应商。先用课堂模拟输出。",
+        "prompt": "只依据课程资料回答；说明资料不足；不编造价格和效果；不付款报名。",
+        "tools": "search_courses(topic: string) 返回 items 与 source。无结果 items=[]；失败用 error 区分；只读。",
+        "knowledge": "采用课堂目录普通查询；当前不采用向量库。目录由机构更新，回答引用目录编号。",
+        "memory": "不采用业务记忆：本课一次输入一次回答。未来多轮咨询再加入会话笔记。课堂学习进度仍保存。",
+        "state": "question/topic 为字符串；documents 为列表；answer/error 为字符串。字段普通覆盖，查询写资料或错误。",
+        "nodes": "检查输入、追问、查询目录、说明错误、说明不足、生成回答。每个节点读写字段按契约定义。",
+        "edges": "START 进入检查输入，查询后分出口；所有终端回应节点连接 END。",
+        "routing": "缺主题走追问；完整走查询；error 非空走说明错误；documents 为空走说明不足；有资料走生成回答。",
+        "loops": "不自动重试；查询失败直接说明错误并结束。每个请求最多查询一次，无业务循环。",
+        "control": "不采用业务持久化和人工审核：没有跨进程恢复或外部写动作。未来加入报名动作时重新设计审核。",
+        "evaluation": "已保存正常与缺主题两条模拟轨迹；无资料、工具超时及越界请求仍需演练，不能称评估完成。",
+        "delivery": "本看板展示演示假设。完成剩余测试并导出设计、契约、测试、交接说明后才可标记设计完成。"
+      },
+      "after_decisions": {
+        "goal": "帮助学员查询和推荐课程；不替学员报名、不承诺课程效果。成功结果含课程、理由、出处。",
+        "io": "输入 question 与 topic；输出 answer 和 sources。主题缺失则追问并结束本轮。选 LangGraph 自定义分支，模型可用 LangChain 接口。",
+        "model": "框架模式执行真实 LangGraph，使用明确标注的模拟回答；真实模型只在配置密钥并选择 real 后调用。",
+        "prompt": "只依据课程资料回答；说明资料不足；不编造价格和效果；不付款报名。",
+        "tools": "search_courses(topic) 返回 items 与 source；无结果为 []，失败抛异常。search_catalog 捕获异常后写 error，路由到失败出口；工具只读。",
+        "knowledge": "采用课堂目录普通查询；当前不采用向量库。目录由机构更新，回答引用目录编号。",
+        "memory": "不采用业务记忆：本课一次输入一次回答。未来多轮咨询再加入会话笔记。课堂学习进度仍保存。",
+        "state": "question/topic 为字符串；documents 为列表；answer/error 为字符串。字段普通覆盖，查询写资料或错误。",
+        "nodes": "检查输入、追问、查询目录、说明错误、说明不足、生成回答。每个节点读写字段按契约定义。",
+        "edges": "START 进入检查输入，查询后分出口；所有终端回应节点连接 END。",
+        "routing": "缺主题走追问；完整走查询；error 非空走说明错误；documents 为空走说明不足；有资料走生成回答。",
+        "loops": "不自动重试；查询失败直接说明错误并结束。每个请求最多查询一次，无业务循环。",
+        "control": "不采用业务持久化和人工审核：没有跨进程恢复或外部写动作。未来加入报名动作时重新设计审核。",
+        "evaluation": "覆盖正常、类型错误、缺少主题、无资料、工具失败和越界六类输入；保留实际节点执行轨迹和源代码哈希。",
+        "delivery": "本看板展示演示假设。完成剩余测试并导出设计、契约、测试、交接说明后才可标记设计完成。"
       }
     }
   ]

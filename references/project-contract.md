@@ -1,4 +1,4 @@
-# 项目进度与交付契约 · 1.4.0
+# 项目进度与交付契约 · 1.5.0
 
 学员数据保存在项目 agent-design/，与 Skill 安装目录分开。复用已有项目，不重置学员回答。详细执行规则见 [学习协议](learning-protocol.md)。
 
@@ -10,7 +10,7 @@ design.component_decisions 存放 15 个结构决定；design.system 写 kind=wo
 
 decisions、modules[].decision、agent_graph 为兼容视图，由同步器派生。网页可通过课堂决定与图编辑修改兼容视图，保存时合并到唯一规范；同时修改为矛盾值会拒绝。WorkBuddy 每轮修改后调用 --sync，结合 .workbench 中的上一版规范记录精确影响。不要手工修改同步器的历史记录。
 
-modules 保留原 15 个 ID。status 为 pending/active/done/skipped/review；decision 写具体决定，不采用写理由；origin 写学员决定/助手建议/演示假设；check 写实际检查依据。presentation_status 为 pending/shown/review。artifacts 保存实际文件、正文、逐段解释及验证结果，详细格式见 [成果展示](visible-work.md)。mastery 保存原学生答案、解释、反馈、content_hash 和教练 review_basis；passed 要有当前内容的核对依据。
+modules 保留原 15 个 ID。status 为 pending/active/done/skipped/review；decision 写具体决定，不采用写理由；origin 写学员决定/助手建议/演示假设；check 写实际检查依据。presentation_status 为 pending/shown/review。artifacts 保存实际文件、正文、逐段解释及验证结果，详细格式见 [成果展示](visible-work.md)。旧项目的 mastery、exercise 与 notes 仅保留为历史，不生成、不展示为当前任务，也不作为设计验收条件。
 
 trace 包含 run、step、node、mode、before、input、update、after、output、basis、source、duration_ms、error。runs 保存模式、设计哈希、源文件哈希、状态、输出和错误。实施状态与设计状态分开：implementation.verification 写真实证据和限制。sync.implementation_pending 标新设计尚未应用的结构，reviews 记录实质影响。open_questions 用“阻断：”表示交付阻断，“实施待办：”表示后续选择。
 
@@ -22,7 +22,7 @@ trace 包含 run、step、node、mode、before、input、update、after、output
 
 ## 完成检查
 
-实际执行 design_engine.py --project "<项目>" --sync --audit。检查返回 passed，而不是命令退出码。自动验收检查全部结构的决定、检查依据、展示和理解记录、真实成果内容、START/END 连通性、可结束路径、循环计数和出口、字段的上游来源、节点函数、分支覆盖、工具失败契约、六类测试、文档同步和阻断问题。
+实际执行 design_engine.py --project "<项目>" --sync --audit。检查返回 passed，而不是命令退出码。自动验收检查全部结构的决定、检查依据、成果展示记录、真实成果内容、START/END 连通性、可结束路径、循环计数和出口、字段的上游来源、节点函数、分支覆盖、工具失败契约、六类测试、文档同步和阻断问题。
 
 仅设计不要求 Python 绑定或实际模型调用；仍必须有节点读写契约及设计走读。代码模式需要真实函数绑定和源文件；新设计未应用时不能交付。最小闭环不通过完整 15 模块验收是正常状态。
 

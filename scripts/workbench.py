@@ -9,6 +9,7 @@ import os
 import secrets
 import subprocess
 import sys
+import uuid
 import threading
 import time
 import webbrowser
@@ -18,9 +19,9 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 from render_board import validate
-from design_engine import normalize, reconcile, derived, audit, grade, affect, fingerprint
+from design_engine import normalize, reconcile, derived, audit, grade, affect, fingerprint, execution_hash, design_change_hash, change_record
 
-VERSION = '1.4.0'
+VERSION = '1.5.0'
 TEXT_EXTENSIONS = {'.py', '.md', '.json', '.yaml', '.yml', '.txt', '.mmd', '.html',
                    '.css', '.js', '.ts', '.tsx', '.jsx', '.toml', '.ini', '.csv', '.bat', '.ps1'}
 EXCLUDED = {'.git', '.venv', 'venv', 'node_modules', '__pycache__', '.workbench'}
@@ -115,7 +116,7 @@ class Project:
                         info['syntax_notice'] = f'第 {error.lineno} 行语法待检查：{error.msg}'
                 if relative in derived(state):
                     info['editable'] = False
-                    info['notice'] = '由结构化设计生成。请在学习路线的契约区或结构课堂修改，再保存同步。'
+                    info['notice'] = '由当前设计自动生成。请在设计结构或结构图修改，再保存同步。'
                 results.append(info)
         return results
 
@@ -213,6 +214,10 @@ class Project:
             baseline = self.root / '.workbench' / 'last-design.json'
             previous = json.loads(baseline.read_text(encoding='utf-8')) if baseline.exists() else self.state()
             state = reconcile(state, previous)
+            change = change_record(state, previous)
+            # History is generated from actual changes, not accepted from arbitrary UI content.
+            history = previous.get('design_changes', [])
+            state['design_changes'] = (history + ([change] if change and (not history or history[-1]['id'] != change['id']) else []))[-20:]
             validate({**state, 'design_status': '进行中'})
             state['teaching_version'] = VERSION
             outputs = derived(state)
@@ -236,6 +241,19 @@ class Project:
             baseline.parent.mkdir(parents=True, exist_ok=True)
             baseline.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding='utf-8')
             return self.snapshot()
+
+    def design_request(self, body):
+        with self.lock:
+            if self.snapshot()['revision'] != body.get('expected_revision'):raise Conflict('项目有更新，请先读取最新设计再提交需求。')
+            text=body.get('text','')
+            if not isinstance(text,str) or not 2<=len(text.strip())<=4000:raise ValueError('请写 2–4000 字的设计需求。')
+            state=self.state();module=body.get('module',state['current_module'])
+            if module not in {m['id'] for m in state['modules']}:raise ValueError('选择一个真实设计结构。')
+            if len([r for r in state['design_requests'] if r['status']=='queued'])>=30:raise ValueError('已有 30 条待处理需求，请先让 WorkBuddy 处理。')
+            state['design_requests'].append({'id':uuid.uuid4().hex[:16],'text':text.strip(),'module':module,
+                'node':body.get('node','') if body.get('node','') in {n['id'] for n in state['agent_graph']['nodes']} else '',
+                'status':'queued','time':datetime.now().astimezone().isoformat(),'design_hash':design_change_hash(state['design'])})
+            return self.save_state({'state':state,'expected_revision':body['expected_revision']})
 
     def exercise(self, body):
         with self.lock:
@@ -344,6 +362,8 @@ def make_server(project, assets, port):
                     snapshot = project.save_state(body)
                 elif self.path == '/api/exercise':
                     snapshot = project.exercise(body)
+                elif self.path == '/api/design-request':
+                    snapshot = project.design_request(body)
                 elif self.path == '/api/run':
                     snapshot = project.run(body)
                 else:
