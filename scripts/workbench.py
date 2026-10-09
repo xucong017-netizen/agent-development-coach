@@ -17,6 +17,7 @@ from urllib.parse import parse_qs, urlparse
 
 from render_board import validate
 
+VERSION = '1.3.0'
 TEXT_EXTENSIONS = {'.py', '.md', '.json', '.yaml', '.yml', '.txt', '.mmd', '.html',
                    '.css', '.js', '.ts', '.tsx', '.jsx', '.toml', '.ini', '.csv', '.bat', '.ps1'}
 EXCLUDED = {'.git', '.venv', 'venv', 'node_modules', '__pycache__', '.workbench'}
@@ -26,6 +27,13 @@ MAX_BODY = 8 * 1024 * 1024
 
 def digest(data):
     return hashlib.sha256(data).hexdigest()
+
+
+def bundle_fingerprint():
+    root = Path(__file__).resolve().parents[1]
+    files = [root / 'scripts' / 'workbench.py', root / 'scripts' / 'render_board.py']
+    files += sorted((root / 'assets' / 'workbench').glob('*'))
+    return digest(b''.join(p.read_bytes() for p in files if p.is_file()))
 
 
 class Conflict(Exception):
@@ -172,13 +180,14 @@ class Project:
                 raise Conflict('项目有新成果。草稿已保留，请先读取最新内容，避免覆盖 WorkBuddy 的更新。')
             state = body.get('state')
             validate(state)
-            state['teaching_version'] = '1.2.0'
+            state['teaching_version'] = VERSION
             self.write(self.state_path, json.dumps(state, ensure_ascii=False, indent=2), '网页保存设计或架构草稿')
             return self.snapshot()
 
 
 def make_server(project, assets, port):
     token = secrets.token_urlsafe(24)
+    service_id = secrets.token_urlsafe(24)
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, fmt, *args):
@@ -202,6 +211,8 @@ def make_server(project, assets, port):
             if not self.same_host():
                 return self.json_response({'error': '仅接受本机工作台请求。'}, 403)
             url = urlparse(self.path)
+            if url.path == '/api/health':
+                return self.json_response(self.server.service_info)
             if url.path == '/api/snapshot':
                 try:
                     snapshot = project.snapshot()
@@ -236,6 +247,12 @@ def make_server(project, assets, port):
                 body = json.loads(self.rfile.read(length))
                 if not isinstance(body, dict):
                     raise ValueError('保存内容需要 JSON 对象。')
+                if self.path == '/api/shutdown':
+                    if body.get('service_id') != service_id:
+                        return self.json_response({'error': '服务标识不一致。'}, 403)
+                    self.json_response({'stopped': True})
+                    threading.Thread(target=self.server.shutdown, daemon=True).start()
+                    return
                 if self.path == '/api/file':
                     snapshot = project.save_file(body)
                 elif self.path == '/api/state':
@@ -249,7 +266,11 @@ def make_server(project, assets, port):
             except (ValueError, KeyError, TypeError, OSError) as error:
                 return self.json_response({'error': str(error)}, 400)
 
-    return ThreadingHTTPServer(('127.0.0.1', port), Handler)
+    server = ThreadingHTTPServer(('127.0.0.1', port), Handler)
+    server.service_info = {'service': 'agent-development-coach', 'version': VERSION,
+        'service_id': service_id, 'project_path': str(project.root), 'pid': os.getpid(),
+        'fingerprint': bundle_fingerprint(), 'url': f'http://127.0.0.1:{server.server_port}'}
+    return server
 
 
 def main():
@@ -257,6 +278,8 @@ def main():
     parser.add_argument('--project', type=Path, required=True, help='学员项目目录')
     parser.add_argument('--port', type=int, default=8766)
     parser.add_argument('--open', action='store_true', help='打开浏览器')
+    parser.add_argument('--auto-port', action='store_true', help='端口被占用时自动选用空闲端口')
+    parser.add_argument('--service-info', type=Path, help='自动启动器的项目内服务记录')
     parser.add_argument('--export', type=Path, help='只导出可离线查看和编辑草稿的独立 HTML')
     args = parser.parse_args()
     assets = Path(__file__).resolve().parents[1] / 'assets' / 'workbench'
@@ -276,7 +299,21 @@ def main():
             args.export.write_text(page, encoding='utf-8')
             print('独立 HTML 已导出：' + str(args.export.resolve()))
             return
-        server = make_server(project, assets, args.port)
+        try:
+            server = make_server(project, assets, args.port)
+        except OSError as error:
+            if args.auto_port and (error.errno in (48, 98, 10048) or getattr(error, 'winerror', None) in (10013, 10048)):
+                server = make_server(project, assets, 0)
+            else:
+                raise
+        if args.service_info:
+            info_path = args.service_info.resolve()
+            if not info_path.is_relative_to(project.root / '.workbench'):
+                raise ValueError('服务记录必须保存在项目 .workbench 目录。')
+            info_path.parent.mkdir(parents=True, exist_ok=True)
+            temporary = info_path.with_suffix('.tmp')
+            temporary.write_text(json.dumps(server.service_info, ensure_ascii=False), encoding='utf-8')
+            temporary.replace(info_path)
     except (ValueError, OSError) as error:
         parser.error(str(error))
     url = f'http://127.0.0.1:{server.server_port}'

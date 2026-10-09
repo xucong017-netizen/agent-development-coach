@@ -6,9 +6,13 @@
 
 每一步都遵循：**说明作用 → 拆解结构 → 图示 → 自然语言填写 → 展示实际文件与内容 → 逐段讲解 → 输入输出检查 → 保存进度**。完成后导出完整智能体设计与实施交接材料。
 
-## v1.2.0：可同步项目的本地教学工作台
+## v1.3.0：一个 Skill，调用后自动打开工作台
 
-增加独立 HTML 工作台，让学员随时看到实际成果，还能修改设计、笔记、文件内容和架构图。Python 3.10+ 标准库启动；无需 Node、网页依赖、模型账户或联网图形库。
+工作台页面、服务、自动启动器和全部教学资源均内置于同一个 Skill ZIP。学员只需安装并调用 Skill，教练会自动定位项目、创建或读取进度、启动后台服务并打开网页，不需要另下载工作台包或运行启动器。
+
+启动脚本会等待服务就绪、复用同一项目的已有服务、自动避开占用端口、保护原进度，并在继续课程时检测断线后重新启动。Windows 后台进程不会弹常驻终端。只在使用 Skill 时启动，不是安装 ZIP 后立即执行或系统开机自启。
+
+需要宿主提供 Python 3.10+ 和执行本地脚本/后台进程的能力。可使用 WorkBuddy 当前可用的 Python 环境，无第三方依赖。实现遵循 [WorkBuddy 官方技能机制](https://open.workbuddy.cn/docs/skill)：由技能指令调用随包脚本。尚未在真实 WorkBuddy 安装环境验证其运行时和后台权限。
 
 | 视图 | 展示与操作 |
 | --- | --- |
@@ -22,28 +26,32 @@
 
 新增本地工作台不依赖 WorkBuddy 的特定浏览器插件。Skill 每轮重读网页修改，复核后同步设计正文、契约与实现，再补充讲解。v1.1.0 的“读回真实文件、每段代码讲清楚、逐结构实现”规则继续保留。
 
-### 在另一台电脑启动
+### 在另一台电脑使用
 
-1. 下载下方**本地工作台 ZIP**，完整解压到普通文件夹。需要 Python 3.10+。
-2. Windows 双击 `启动工作台.bat`，浏览器打开 `http://127.0.0.1:8766`；终端窗口保持运行。默认展示附带的课堂模拟项目。
-3. 使用自己的项目：把含 `agent-design/teaching-state.json` 的项目文件夹拖到启动器上，或在终端运行下面的命令。
+1. 下载 **agent-development-coach.zip**，在 WorkBuddy 中更新/导入并启用该技能。只需要这一个包。
+2. 回到原项目，调用“使用 agent-development-coach，继续我的项目”。Skill 自动启动内置工作台并打开浏览器，保留原进度。
+3. 直接在网页查看或编辑。修改后告诉教练继续，教练重读修改、复核相关结构与代码、补充讲解。
+
+没有原项目时调用 Skill 开始新项目，自动创建未填写进度并打开工作台，再逐步提问。教师演示使用技能内置模拟案例；不把示例答案当成学员决定。
+
+自动入口（由 Skill 执行，学员不需要粘贴命令）：
 
 ```text
-python scripts/workbench.py --project "你的项目目录" --port 8766 --open
+python "<技能目录>/scripts/start_workbench.py" --project "<学员项目目录>"
 ```
 
-Mac/Linux 使用上述 Python 命令。端口已被占用时改为 `--port 8767`。自己的项目进度由新版 Skill 初始化或读取；不要用示例进度覆盖旧项目。单独安装 Skill 时脚本路径应指向实际技能目录。
+每轮健康检查加 `--no-open`，断线后自动恢复；用户要求停止时加 `--stop`。服务和日志保存在项目 `.workbench/`，旧文件备份保持有效。具体运行约定见 [内置工作台说明](references/workbench.md)。
 
-网页版的设计决定保存在进度 JSON，需要 WorkBuddy 将其落实到正文和代码。代码编辑不会自动执行，架构编辑不会自动生成 LangGraph 代码。修改后在 WorkBuddy 说：“读取网页修改，检查相关结构和代码，更新讲解后继续。”
+网页设计决定保存到进度 JSON，由教练复核并同步到正文和代码。代码编辑不会自动执行，架构编辑不会自动生成 LangGraph 实现。
 
-独立 HTML 文件可以立即离线浏览、编辑浏览器草稿和导出成果；**需要本地服务才能自动刷新并写回项目**。导入 JSON 只导入进度 state，不覆盖代码文件。详细同步约定见 [工作台说明](references/workbench.md)。
+独立 HTML 和原手动工作台包仍作为可选成果副本/调试工具；正常使用无需下载它们。单个 HTML 只保存浏览器草稿，直接同步依赖 Skill 自动启动的本地服务。
 
 ### 更新旧项目
 
 下载新 ZIP，在 WorkBuddy 的技能管理中更新原技能，或用当前版本提供的替换/重新导入入口。避免同时启用两个同名版本。保留原学员项目及进度，回到原对话使用：
 
 ```text
-使用 agent-development-coach 1.2.0。
+使用 agent-development-coach 1.3.0。
 读取原学员项目并启动本地 HTML 教学工作台，与项目文件同步。
 不要重置我的项目，先读取之前已生成的文件。
 从当前步骤开始补讲：展示实际内容、文件职责、每段代码的输入输出和调用关系。
@@ -54,10 +62,10 @@ Mac/Linux 使用上述 Python 命令。端口已被占用时改为 `--port 8767`
 
 ## 下载与安装
 
-- [下载 v1.2.0 技能 ZIP](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.2.0/agent-development-coach.zip)
-- [查看发布页](https://github.com/xucong017-netizen/agent-development-coach/releases/tag/v1.2.0)
-- [下载本地工作台 ZIP（含启动器和示例项目）](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.2.0/local-agent-workbench.zip)
-- [下载独立 HTML 成果示例](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.2.0/agent-workbench.html)
+- [下载 v1.3.0 技能 ZIP](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.3.0/agent-development-coach.zip)
+- [查看发布页](https://github.com/xucong017-netizen/agent-development-coach/releases/tag/v1.3.0)
+- [可选：独立工作台 ZIP（用于调试）](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.3.0/local-agent-workbench.zip)
+- [下载独立 HTML 成果示例](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.3.0/agent-workbench.html)
 - [仓库内 ZIP 备份](dist/agent-development-coach.zip)
 - [课堂示例看板](examples/classroom-board.html)：下载后用浏览器离线打开，GitHub 文件页不会直接执行 HTML。
 
