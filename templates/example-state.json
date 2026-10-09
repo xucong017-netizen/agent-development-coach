@@ -3,7 +3,7 @@
   "title": "课程咨询助手 · 课堂模拟示例",
   "mode": "教师演示",
   "delivery": "设计与代码",
-  "current_module": "evaluation",
+  "current_module": "tools",
   "design_status": "进行中",
   "decisions": {
     "scope": "帮助学员查询和推荐课程；不替学员报名、不承诺课程效果。成功结果含课程、理由、出处。",
@@ -61,7 +61,35 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": [
+        {
+          "path": "agent-design/agent-design.md",
+          "purpose": "给智能体一张有边界和成功标准的任务单。",
+          "kind": "设计文档",
+          "change": "课堂示例已有内容",
+          "content": "## 01 任务、范围与验收\n\n帮助学员查询和推荐课程；不替学员报名、不承诺课程效果。成功结果含课程、理由、出处。\n",
+          "content_scope": "第 5 行起的完整本模块段落；其他模块未在此重复",
+          "explanations": [
+            {
+              "block": "本模块实际设计决定",
+              "why": "给智能体一张有边界和成功标准的任务单。",
+              "input": "你想让智能体帮助谁完成什么事？",
+              "action": "帮助学员查询和推荐课程；不替学员报名、不承诺课程效果。成功结果含课程、理由、出处。",
+              "output": "帮助学员查询和推荐课程；不替学员报名、不承诺课程效果。成功结果含课程、理由、出处。",
+              "consequence": "遗漏此项会使对应结构的职责、采用条件或检查标准不明确。",
+              "graph_node": "任务、范围与验收（设计结构，不是新增业务节点）"
+            }
+          ],
+          "verification": {
+            "status": "设计检查",
+            "command": "读取设计正文并与模块决定对照",
+            "expected": "能区分范围内任务与越界请求。",
+            "actual": "示例段落与已保存的课堂假设一致；未代表学员验收。"
+          }
+        }
+      ]
     },
     {
       "id": "io",
@@ -123,7 +151,35 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": [
+        {
+          "path": "agent-design/agent-design.md",
+          "purpose": "定义接收什么、交付什么，并选择适合的实现路线。",
+          "kind": "设计文档",
+          "change": "课堂示例已有内容",
+          "content": "## 02 输入、输出与架构路线\n\n输入 question 与 topic；输出 answer 和 sources。主题缺失则追问并结束本轮。选 LangGraph 自定义分支，模型可用 LangChain 接口。\n",
+          "content_scope": "第 9 行起的完整本模块段落；其他模块未在此重复",
+          "explanations": [
+            {
+              "block": "本模块实际设计决定",
+              "why": "定义接收什么、交付什么，并选择适合的实现路线。",
+              "input": "用户最终应该得到什么结果？",
+              "action": "输入 question 与 topic；输出 answer 和 sources。主题缺失则追问并结束本轮。选 LangGraph 自定义分支，模型可用 LangChain 接口。",
+              "output": "输入 question 与 topic；输出 answer 和 sources。主题缺失则追问并结束本轮。选 LangGraph 自定义分支，模型可用 LangChain 接口。",
+              "consequence": "遗漏此项会使对应结构的职责、采用条件或检查标准不明确。",
+              "graph_node": "输入、输出与架构路线（设计结构，不是新增业务节点）"
+            }
+          ],
+          "verification": {
+            "status": "设计检查",
+            "command": "读取设计正文并与模块决定对照",
+            "expected": "完整与缺字段的输入各有处理方式。",
+            "actual": "示例段落与已保存的课堂假设一致；未代表学员验收。"
+          }
+        }
+      ]
     },
     {
       "id": "model",
@@ -173,7 +229,35 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": [
+        {
+          "path": "agent-design/agent-design.md",
+          "purpose": "用语言模型理解和整理信息；先模拟也能开始设计。",
+          "kind": "设计文档",
+          "change": "课堂示例已有内容",
+          "content": "## 03 模型\n\n设计模型职责为整理有出处的课程回答，尚未选择真实供应商。先用课堂模拟输出。\n",
+          "content_scope": "第 13 行起的完整本模块段落；其他模块未在此重复",
+          "explanations": [
+            {
+              "block": "本模块实际设计决定",
+              "why": "用语言模型理解和整理信息；先模拟也能开始设计。",
+              "input": "先用模拟演练，还是接入已有模型？",
+              "action": "设计模型职责为整理有出处的课程回答，尚未选择真实供应商。先用课堂模拟输出。",
+              "output": "设计模型职责为整理有出处的课程回答，尚未选择真实供应商。先用课堂模拟输出。",
+              "consequence": "遗漏此项会使对应结构的职责、采用条件或检查标准不明确。",
+              "graph_node": "模型（设计结构，不是新增业务节点）"
+            }
+          ],
+          "verification": {
+            "status": "设计检查",
+            "command": "读取设计正文并与模块决定对照",
+            "expected": "模型不能凭空读取外部数据库。",
+            "actual": "示例段落与已保存的课堂假设一致；未代表学员验收。"
+          }
+        }
+      ]
     },
     {
       "id": "prompt",
@@ -235,7 +319,35 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": [
+        {
+          "path": "agent-design/agent-design.md",
+          "purpose": "明确模型的角色、工作规则和回答方式。",
+          "kind": "设计文档",
+          "change": "课堂示例已有内容",
+          "content": "## 04 提示词与消息\n\n只依据课程资料回答；说明资料不足；不编造价格和效果；不付款报名。\n",
+          "content_scope": "第 17 行起的完整本模块段落；其他模块未在此重复",
+          "explanations": [
+            {
+              "block": "本模块实际设计决定",
+              "why": "明确模型的角色、工作规则和回答方式。",
+              "input": "哪些规则必须每次遵守？",
+              "action": "只依据课程资料回答；说明资料不足；不编造价格和效果；不付款报名。",
+              "output": "只依据课程资料回答；说明资料不足；不编造价格和效果；不付款报名。",
+              "consequence": "遗漏此项会使对应结构的职责、采用条件或检查标准不明确。",
+              "graph_node": "提示词与消息（设计结构，不是新增业务节点）"
+            }
+          ],
+          "verification": {
+            "status": "设计检查",
+            "command": "读取设计正文并与模块决定对照",
+            "expected": "资料不足时有不编造的回应。",
+            "actual": "示例段落与已保存的课堂假设一致；未代表学员验收。"
+          }
+        }
+      ]
     },
     {
       "id": "tools",
@@ -297,7 +409,112 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "shown",
+      "artifacts": [
+        {
+          "path": "agent-design/agent-design.md",
+          "purpose": "通过明确定义的工具查询信息或执行动作。",
+          "kind": "设计文档",
+          "change": "课堂示例已有内容",
+          "content": "## 05 工具及调用契约\n\nsearch_courses(topic: string) 返回 items 与 source。无结果 items=[]；失败用 error 区分；只读。\n",
+          "content_scope": "第 21 行起的完整本模块段落；其他模块未在此重复",
+          "explanations": [
+            {
+              "block": "本模块实际设计决定",
+              "why": "通过明确定义的工具查询信息或执行动作。",
+              "input": "完成任务要查什么信息或做什么操作？",
+              "action": "search_courses(topic: string) 返回 items 与 source。无结果 items=[]；失败用 error 区分；只读。",
+              "output": "search_courses(topic: string) 返回 items 与 source。无结果 items=[]；失败用 error 区分；只读。",
+              "consequence": "遗漏此项会使对应结构的职责、采用条件或检查标准不明确。",
+              "graph_node": "工具及调用契约（设计结构，不是新增业务节点）"
+            }
+          ],
+          "verification": {
+            "status": "设计检查",
+            "command": "读取设计正文并与模块决定对照",
+            "expected": "每个采用工具有输入输出及失败出口。",
+            "actual": "示例段落与已保存的课堂假设一致；未代表学员验收。"
+          }
+        },
+        {
+          "path": "implementation/tools.py",
+          "purpose": "加载模拟课程目录并按主题查询；后续由查询节点调用。",
+          "kind": "业务代码",
+          "change": "课堂模板已有，可独立执行",
+          "content": "\"\"\"课堂用只读课程查询；数据是模拟目录，不调用模型或 LangChain。\"\"\"\nimport json\nimport sys\nfrom pathlib import Path\n\n\ndef load_catalog() -> dict:\n    \"\"\"读取与本文件放在同一目录的课程 JSON。\"\"\"\n    path = Path(__file__).with_name(\"course_catalog.json\")\n    return json.loads(path.read_text(encoding=\"utf-8\"))\n\n\ndef search_courses(topic: str) -> dict:\n    \"\"\"按主题查询课程；无匹配返回空列表，空主题拒绝查询。\"\"\"\n    query = topic.strip().casefold()\n    if not query:\n        raise ValueError(\"请先提供学习主题。\")\n    catalog = load_catalog()\n    items = [item for item in catalog[\"items\"]\n             if query in item[\"topic\"].casefold()]\n    return {\"items\": items, \"source\": catalog[\"source\"]}\n\n\nif __name__ == \"__main__\":\n    if len(sys.argv) != 2:\n        raise SystemExit(\"用法：python tools.py <学习主题>\")\n    print(json.dumps(search_courses(sys.argv[1]), ensure_ascii=False, indent=2))\n",
+          "content_scope": "完整文件，第 1–27 行",
+          "explanations": [
+            {
+              "block": "第 1–4 行：说明与导入",
+              "why": "查询需要读取 JSON 文件并提供命令行演示入口。",
+              "input": "Python 标准库；没有第三方依赖。",
+              "action": "json 负责解析与输出，Path 定位数据文件，sys 获取命令行主题。",
+              "output": "后续函数可使用这三个库。",
+              "consequence": "遗漏导入会出现名称未定义错误。",
+              "graph_node": "查询目录节点的基础依赖"
+            },
+            {
+              "block": "第 7–10 行：load_catalog",
+              "why": "把课程资料与查询逻辑分开，换课程不必修改函数。",
+              "input": "与 tools.py 同目录的 course_catalog.json。",
+              "action": "定位文件，以 UTF-8 读取，再解析成字典。",
+              "output": "含 source 和 items 的字典。",
+              "consequence": "路径错误或 JSON 损坏会抛异常；后续调用节点需处理。",
+              "graph_node": "search 查询节点读取资料"
+            },
+            {
+              "block": "第 13–21 行：search_courses",
+              "why": "按用户主题选择相关课程，避免总返回全部目录。",
+              "input": "topic 字符串。",
+              "action": "去空格并统一大小写；拒绝空主题；筛选课程 topic。",
+              "output": "items 列表和 source；无匹配时 items=[]。",
+              "consequence": "取消空主题检查会把空字符串当作所有主题的匹配。",
+              "graph_node": "search；返回值交给后续节点，尚未真实接图"
+            },
+            {
+              "block": "第 24–27 行：独立运行入口",
+              "why": "不用模型账户即可验证当前函数。",
+              "input": "python implementation/tools.py Python 的主题参数。",
+              "action": "检查参数数量，调用查询，打印保留中文的 JSON。",
+              "output": "终端中的实际查询结果。",
+              "consequence": "没有入口则直接运行文件不会展示结果；图调用仍可导入函数。",
+              "graph_node": "本地演示入口；不是智能体 START"
+            }
+          ],
+          "verification": {
+            "status": "已实际执行",
+            "command": "python implementation/tools.py Python",
+            "expected": "匹配 Python 入门并返回模拟目录出处；未调用模型。",
+            "actual": "{\n  \"items\": [\n    {\n      \"name\": \"Python 入门\",\n      \"topic\": \"Python\",\n      \"level\": \"零基础\"\n    }\n  ],\n  \"source\": \"课堂模拟目录 A（非真实课程）\"\n}"
+          }
+        },
+        {
+          "path": "implementation/course_catalog.json",
+          "purpose": "提供有出处的模拟课程数据，供 tools.py 读取。",
+          "kind": "数据文件",
+          "change": "课堂模板已有",
+          "content": "{\n  \"source\": \"课堂模拟目录 A（非真实课程）\",\n  \"items\": [\n    {\"name\": \"Python 入门\", \"topic\": \"Python\", \"level\": \"零基础\"},\n    {\"name\": \"表格数据分析\", \"topic\": \"Excel\", \"level\": \"入门\"}\n  ]\n}\n",
+          "content_scope": "完整 JSON 文件",
+          "explanations": [
+            {
+              "block": "source 与 items",
+              "why": "课程数据和出处独立于查询逻辑维护。",
+              "input": "课堂准备的 Python 和 Excel 两条模拟资料。",
+              "action": "source 标注出处；每个 items 条目声明名称、主题和难度。",
+              "output": "load_catalog 可读取的课程目录。",
+              "consequence": "遗漏 topic 会让筛选失败；遗漏 source 会无法返回出处。",
+              "graph_node": "search 查询节点的数据源"
+            }
+          ],
+          "verification": {
+            "status": "已实际执行",
+            "command": "python implementation/tools.py Python",
+            "expected": "数据被 load_catalog 解析并被 search_courses 使用。",
+            "actual": "真实本地查询成功读取了此文件；资料仍是模拟数据。"
+          }
+        }
+      ]
     },
     {
       "id": "knowledge",
@@ -359,7 +576,35 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": [
+        {
+          "path": "agent-design/agent-design.md",
+          "purpose": "先查可靠材料，再依据材料回答。",
+          "kind": "设计文档",
+          "change": "课堂示例已有内容",
+          "content": "## 06 知识与检索\n\n采用课堂目录普通查询；当前不采用向量库。目录由机构更新，回答引用目录编号。\n",
+          "content_scope": "第 25 行起的完整本模块段落；其他模块未在此重复",
+          "explanations": [
+            {
+              "block": "本模块实际设计决定",
+              "why": "先查可靠材料，再依据材料回答。",
+              "input": "哪些资料算可靠，多久更新？",
+              "action": "采用课堂目录普通查询；当前不采用向量库。目录由机构更新，回答引用目录编号。",
+              "output": "采用课堂目录普通查询；当前不采用向量库。目录由机构更新，回答引用目录编号。",
+              "consequence": "遗漏此项会使对应结构的职责、采用条件或检查标准不明确。",
+              "graph_node": "知识与检索（设计结构，不是新增业务节点）"
+            }
+          ],
+          "verification": {
+            "status": "设计检查",
+            "command": "读取设计正文并与模块决定对照",
+            "expected": "无资料不编造；来源可追溯。",
+            "actual": "示例段落与已保存的课堂假设一致；未代表学员验收。"
+          }
+        }
+      ]
     },
     {
       "id": "memory",
@@ -409,7 +654,35 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": [
+        {
+          "path": "agent-design/agent-design.md",
+          "purpose": "区分本次对话笔记与跨会话长期档案。",
+          "kind": "设计文档",
+          "change": "课堂示例已有内容",
+          "content": "## 07 记忆\n\n不采用业务记忆：本课一次输入一次回答。未来多轮咨询再加入会话笔记。课堂学习进度仍保存。\n",
+          "content_scope": "第 29 行起的完整本模块段落；其他模块未在此重复",
+          "explanations": [
+            {
+              "block": "本模块实际设计决定",
+              "why": "区分本次对话笔记与跨会话长期档案。",
+              "input": "哪些信息需要记住，记多久？",
+              "action": "不采用业务记忆：本课一次输入一次回答。未来多轮咨询再加入会话笔记。课堂学习进度仍保存。",
+              "output": "不采用业务记忆：本课一次输入一次回答。未来多轮咨询再加入会话笔记。课堂学习进度仍保存。",
+              "consequence": "遗漏此项会使对应结构的职责、采用条件或检查标准不明确。",
+              "graph_node": "记忆（设计结构，不是新增业务节点）"
+            }
+          ],
+          "verification": {
+            "status": "设计检查",
+            "command": "读取设计正文并与模块决定对照",
+            "expected": "不同用户与会话的数据不串用。",
+            "actual": "示例段落与已保存的课堂假设一致；未代表学员验收。"
+          }
+        }
+      ]
     },
     {
       "id": "state",
@@ -471,7 +744,35 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": [
+        {
+          "path": "agent-design/agent-design.md",
+          "purpose": "用共享工作表在步骤之间传递必要数据。",
+          "kind": "设计文档",
+          "change": "课堂示例已有内容",
+          "content": "## 08 状态与更新规则\n\nquestion/topic 为字符串；documents 为列表；answer/error 为字符串。字段普通覆盖，查询写资料或错误。\n",
+          "content_scope": "第 33 行起的完整本模块段落；其他模块未在此重复",
+          "explanations": [
+            {
+              "block": "本模块实际设计决定",
+              "why": "用共享工作表在步骤之间传递必要数据。",
+              "input": "哪些信息必须从一步传到下一步？",
+              "action": "question/topic 为字符串；documents 为列表；answer/error 为字符串。字段普通覆盖，查询写资料或错误。",
+              "output": "question/topic 为字符串；documents 为列表；answer/error 为字符串。字段普通覆盖，查询写资料或错误。",
+              "consequence": "遗漏此项会使对应结构的职责、采用条件或检查标准不明确。",
+              "graph_node": "状态与更新规则（设计结构，不是新增业务节点）"
+            }
+          ],
+          "verification": {
+            "status": "设计检查",
+            "command": "读取设计正文并与模块决定对照",
+            "expected": "字段有来源，更新不意外丢失信息。",
+            "actual": "示例段落与已保存的课堂假设一致；未代表学员验收。"
+          }
+        }
+      ]
     },
     {
       "id": "nodes",
@@ -521,7 +822,35 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": [
+        {
+          "path": "agent-design/agent-design.md",
+          "purpose": "把流程拆成职责明确的工作站。",
+          "kind": "设计文档",
+          "change": "课堂示例已有内容",
+          "content": "## 09 节点\n\n检查输入、追问、查询目录、说明错误、说明不足、生成回答。每个节点读写字段按契约定义。\n",
+          "content_scope": "第 37 行起的完整本模块段落；其他模块未在此重复",
+          "explanations": [
+            {
+              "block": "本模块实际设计决定",
+              "why": "把流程拆成职责明确的工作站。",
+              "input": "这个节点只负责做哪一件事？",
+              "action": "检查输入、追问、查询目录、说明错误、说明不足、生成回答。每个节点读写字段按契约定义。",
+              "output": "检查输入、追问、查询目录、说明错误、说明不足、生成回答。每个节点读写字段按契约定义。",
+              "consequence": "遗漏此项会使对应结构的职责、采用条件或检查标准不明确。",
+              "graph_node": "节点（设计结构，不是新增业务节点）"
+            }
+          ],
+          "verification": {
+            "status": "设计检查",
+            "command": "读取设计正文并与模块决定对照",
+            "expected": "每个节点的输入输出都能对应状态字段。",
+            "actual": "示例段落与已保存的课堂假设一致；未代表学员验收。"
+          }
+        }
+      ]
     },
     {
       "id": "edges",
@@ -583,7 +912,35 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": [
+        {
+          "path": "agent-design/agent-design.md",
+          "purpose": "用连线把工作站接成有入口和出口的路线。",
+          "kind": "设计文档",
+          "change": "课堂示例已有内容",
+          "content": "## 10 连线、入口与终点\n\nSTART 进入检查输入，查询后分出口；所有终端回应节点连接 END。\n",
+          "content_scope": "第 41 行起的完整本模块段落；其他模块未在此重复",
+          "explanations": [
+            {
+              "block": "本模块实际设计决定",
+              "why": "用连线把工作站接成有入口和出口的路线。",
+              "input": "哪些步骤一定要先后执行？",
+              "action": "START 进入检查输入，查询后分出口；所有终端回应节点连接 END。",
+              "output": "START 进入检查输入，查询后分出口；所有终端回应节点连接 END。",
+              "consequence": "遗漏此项会使对应结构的职责、采用条件或检查标准不明确。",
+              "graph_node": "连线、入口与终点（设计结构，不是新增业务节点）"
+            }
+          ],
+          "verification": {
+            "status": "设计检查",
+            "command": "读取设计正文并与模块决定对照",
+            "expected": "全部使用节点可达且有结束路径。",
+            "actual": "示例段落与已保存的课堂假设一致；未代表学员验收。"
+          }
+        }
+      ]
     },
     {
       "id": "routing",
@@ -650,7 +1007,35 @@
             "label": "等待下轮"
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": [
+        {
+          "path": "agent-design/agent-design.md",
+          "purpose": "不同情况走不同路线。",
+          "kind": "设计文档",
+          "change": "课堂示例已有内容",
+          "content": "## 11 条件分支与路由\n\n缺主题走追问；完整走查询；error 非空走说明错误；documents 为空走说明不足；有资料走生成回答。\n",
+          "content_scope": "第 45 行起的完整本模块段落；其他模块未在此重复",
+          "explanations": [
+            {
+              "block": "本模块实际设计决定",
+              "why": "不同情况走不同路线。",
+              "input": "什么情况下需要换路线？",
+              "action": "缺主题走追问；完整走查询；error 非空走说明错误；documents 为空走说明不足；有资料走生成回答。",
+              "output": "缺主题走追问；完整走查询；error 非空走说明错误；documents 为空走说明不足；有资料走生成回答。",
+              "consequence": "遗漏此项会使对应结构的职责、采用条件或检查标准不明确。",
+              "graph_node": "条件分支与路由（设计结构，不是新增业务节点）"
+            }
+          ],
+          "verification": {
+            "status": "设计检查",
+            "command": "读取设计正文并与模块决定对照",
+            "expected": "完整、缺字段、无资料均能走到合适出口。",
+            "actual": "示例段落与已保存的课堂假设一致；未代表学员验收。"
+          }
+        }
+      ]
     },
     {
       "id": "loops",
@@ -717,7 +1102,35 @@
             "label": "通过或达上限"
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": [
+        {
+          "path": "agent-design/agent-design.md",
+          "purpose": "允许有界补救，保证最终能停下来。",
+          "kind": "设计文档",
+          "change": "课堂示例已有内容",
+          "content": "## 12 循环、重试与停止\n\n不自动重试；查询失败直接说明错误并结束。每个请求最多查询一次，无业务循环。\n",
+          "content_scope": "第 49 行起的完整本模块段落；其他模块未在此重复",
+          "explanations": [
+            {
+              "block": "本模块实际设计决定",
+              "why": "允许有界补救，保证最终能停下来。",
+              "input": "失败后要重试几次，达到上限怎么办？",
+              "action": "不自动重试；查询失败直接说明错误并结束。每个请求最多查询一次，无业务循环。",
+              "output": "不自动重试；查询失败直接说明错误并结束。每个请求最多查询一次，无业务循环。",
+              "consequence": "遗漏此项会使对应结构的职责、采用条件或检查标准不明确。",
+              "graph_node": "循环、重试与停止（设计结构，不是新增业务节点）"
+            }
+          ],
+          "verification": {
+            "status": "设计检查",
+            "command": "读取设计正文并与模块决定对照",
+            "expected": "次数边界由程序执行，有明确停止条件。",
+            "actual": "示例段落与已保存的课堂假设一致；未代表学员验收。"
+          }
+        }
+      ]
     },
     {
       "id": "control",
@@ -779,7 +1192,35 @@
             "label": "拒绝"
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": [
+        {
+          "path": "agent-design/agent-design.md",
+          "purpose": "需要时保存业务执行进度，停下让人决定。",
+          "kind": "设计文档",
+          "change": "课堂示例已有内容",
+          "content": "## 13 持久化、人工审核与恢复\n\n不采用业务持久化和人工审核：没有跨进程恢复或外部写动作。未来加入报名动作时重新设计审核。\n",
+          "content_scope": "第 53 行起的完整本模块段落；其他模块未在此重复",
+          "explanations": [
+            {
+              "block": "本模块实际设计决定",
+              "why": "需要时保存业务执行进度，停下让人决定。",
+              "input": "哪些动作必须交给人来决定？",
+              "action": "不采用业务持久化和人工审核：没有跨进程恢复或外部写动作。未来加入报名动作时重新设计审核。",
+              "output": "不采用业务持久化和人工审核：没有跨进程恢复或外部写动作。未来加入报名动作时重新设计审核。",
+              "consequence": "遗漏此项会使对应结构的职责、采用条件或检查标准不明确。",
+              "graph_node": "持久化、人工审核与恢复（设计结构，不是新增业务节点）"
+            }
+          ],
+          "verification": {
+            "status": "设计检查",
+            "command": "读取设计正文并与模块决定对照",
+            "expected": "采用审核时批准与拒绝都有路径；不采用有理由。",
+            "actual": "示例段落与已保存的课堂假设一致；未代表学员验收。"
+          }
+        }
+      ]
     },
     {
       "id": "evaluation",
@@ -841,7 +1282,35 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": [
+        {
+          "path": "agent-design/agent-design.md",
+          "purpose": "用真实用例和可见轨迹检查任务是否完成。",
+          "kind": "设计文档",
+          "change": "课堂示例已有内容",
+          "content": "## 14 输出检查、评估与观察\n\n已保存正常与缺主题两条模拟轨迹；无资料、工具超时及越界请求仍需演练，不能称评估完成。\n",
+          "content_scope": "第 57 行起的完整本模块段落；其他模块未在此重复",
+          "explanations": [
+            {
+              "block": "本模块实际设计决定",
+              "why": "用真实用例和可见轨迹检查任务是否完成。",
+              "input": "出现哪种结果就算没有完成任务？",
+              "action": "已保存正常与缺主题两条模拟轨迹；无资料、工具超时及越界请求仍需演练，不能称评估完成。",
+              "output": "已保存正常与缺主题两条模拟轨迹；无资料、工具超时及越界请求仍需演练，不能称评估完成。",
+              "consequence": "遗漏此项会使对应结构的职责、采用条件或检查标准不明确。",
+              "graph_node": "输出检查、评估与观察（设计结构，不是新增业务节点）"
+            }
+          ],
+          "verification": {
+            "status": "设计检查",
+            "command": "读取设计正文并与模块决定对照",
+            "expected": "至少覆盖正常、缺输入、无资料、失败、越界。",
+            "actual": "示例段落与已保存的课堂假设一致；未代表学员验收。"
+          }
+        }
+      ]
     },
     {
       "id": "delivery",
@@ -903,7 +1372,35 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": [
+        {
+          "path": "agent-design/agent-design.md",
+          "purpose": "把模块拼成能讲清、能交给开发者实施的设计。",
+          "kind": "设计文档",
+          "change": "课堂示例已有内容",
+          "content": "## 15 整体设计与实施交接\n\n本看板展示演示假设。完成剩余测试并导出设计、契约、测试、交接说明后才可标记设计完成。\n",
+          "content_scope": "第 61 行起的完整本模块段落；其他模块未在此重复",
+          "explanations": [
+            {
+              "block": "本模块实际设计决定",
+              "why": "把模块拼成能讲清、能交给开发者实施的设计。",
+              "input": "能沿着图讲解一个正常和一个失败请求吗？",
+              "action": "本看板展示演示假设。完成剩余测试并导出设计、契约、测试、交接说明后才可标记设计完成。",
+              "output": "本看板展示演示假设。完成剩余测试并导出设计、契约、测试、交接说明后才可标记设计完成。",
+              "consequence": "遗漏此项会使对应结构的职责、采用条件或检查标准不明确。",
+              "graph_node": "整体设计与实施交接（设计结构，不是新增业务节点）"
+            }
+          ],
+          "verification": {
+            "status": "设计检查",
+            "command": "读取设计正文并与模块决定对照",
+            "expected": "契约与图一致，循环可停，没有阻断项。",
+            "actual": "示例段落与已保存的课堂假设一致；未代表学员验收。"
+          }
+        }
+      ]
     }
   ],
   "agent_graph": {
@@ -1107,10 +1604,35 @@
   "open_questions": [
     "阻断：尚未演练无资料、工具失败和越界请求。",
     "阻断：尚未导出完整设计交接文件。",
-    "实施待办：选择模型供应商并验证真实接口能力。"
+    "实施待办：选择模型供应商并验证真实接口能力。",
+    "教学待办：其余模块实际设计内容已附，但仍应按步骤讲解后记录成果已展示。"
   ],
   "implementation": {
-    "status": "未开始",
-    "verification": "本示例只渲染教学设计和模拟数据，没有安装、运行 LangChain/LangGraph 或调用模型。"
-  }
+    "status": "生成中",
+    "verification": "仅课堂模板查询函数已在本地真实执行；模型与 LangGraph 尚未接入，业务轨迹仍为模拟。"
+  },
+  "teaching_version": "1.1.0",
+  "file_catalog": [
+    {
+      "path": "agent-design/agent-design.md",
+      "purpose": "保存 15 个模块的具体课堂设计决定。",
+      "kind": "设计文档",
+      "status": "已有",
+      "caller": "教师/学员查阅，后续实现依据"
+    },
+    {
+      "path": "implementation/course_catalog.json",
+      "purpose": "模拟课程名称、主题与出处。",
+      "kind": "数据文件",
+      "status": "已有",
+      "caller": "implementation/tools.py::load_catalog"
+    },
+    {
+      "path": "implementation/tools.py",
+      "purpose": "读取目录并按主题查询；带独立演示入口。",
+      "kind": "业务代码",
+      "status": "已有",
+      "caller": "命令行入口；未来的查询节点"
+    }
+  ]
 }

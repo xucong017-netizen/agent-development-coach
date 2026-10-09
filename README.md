@@ -4,12 +4,33 @@
 
 **A Chinese beginner-friendly WorkBuddy skill for step-by-step LangChain and LangGraph agent design, component diagrams, classroom demonstrations, and optional Python implementation.**
 
-每一步都遵循：**说明作用 → 拆解结构 → 展示图示 → 自然语言填写 → 小检查 → 保存进度**。完成后导出完整智能体设计与实施交接材料。
+每一步都遵循：**说明作用 → 拆解结构 → 图示 → 自然语言填写 → 展示实际文件与内容 → 逐段讲解 → 输入输出检查 → 保存进度**。完成后导出完整智能体设计与实施交接材料。
+
+## v1.1.0：看得见每一步写了什么
+
+本版修复“步骤做了却没有展示具体内容”的教学缺口。每步必须读回实际文件，在聊天中展示本次正文或代码；说明各文件用途与调用关系；逐块解释输入、动作、输出、设计理由及改错后影响；给检查命令和实际或预期结果，再进入下一步。
+
+开发教学在当前结构确定后立即实现并讲解，不把代码全部推迟到课程最后。仅设计模式也展示实际任务说明、提示词、字段表和契约正文。看板增加文件地图、完整内容、代码分块讲解和执行证据；“已写入”与“已展示”分别记录。
+
+附带可独立运行的模拟目录查询示例，包含 tools.py、课程 JSON 和 15 模块的示例设计正文。函数查询已本地验证，真实模型与 LangGraph 尚未接通。
+
+### 更新旧项目
+
+下载新 ZIP，在 WorkBuddy 的技能管理中更新原技能，或用当前版本提供的替换/重新导入入口。避免同时启用两个同名版本。保留原学员项目及进度，回到原对话使用：
+
+```text
+使用 agent-development-coach 1.1.0。
+不要重置我的项目，先读取之前已生成的文件。
+从当前步骤开始补讲：展示实际内容、文件职责、每段代码的输入输出和调用关系。
+之前只标记完成但没有展示的步骤也请补讲，再继续开发。
+```
+
+可以直接说“展示这一步写了什么”“解释每段代码”“列出全部文件和作用”或“补讲前面内容”。旧进度保持兼容；不存在的文件会明确说明，不从完成状态推断已经生成。
 
 ## 下载与安装
 
-- [下载 v1.0.0 技能 ZIP](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.0.0/agent-development-coach.zip)
-- [查看发布页](https://github.com/xucong017-netizen/agent-development-coach/releases/tag/v1.0.0)
+- [下载 v1.1.0 技能 ZIP](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.1.0/agent-development-coach.zip)
+- [查看发布页](https://github.com/xucong017-netizen/agent-development-coach/releases/tag/v1.1.0)
 - [仓库内 ZIP 备份](dist/agent-development-coach.zip)
 - [课堂示例看板](examples/classroom-board.html)：下载后用浏览器离线打开，GitHub 文件页不会直接执行 HTML。
 
@@ -28,6 +49,7 @@ ZIP 根目录直接包含 `SKILL.md`，附带 `references/`、`templates/`、`sc
 我没有开发经验，请带我从零设计一个智能体。
 每次只讲一个结构，先说明作用和组成，再给图示，
 让我用自然语言填写，检查后再进入下一步。
+每一步展示实际写入内容、文件用途；有代码时逐段解释并给输入输出例子。
 我想做一个课程咨询助手，先只完成设计。
 ```
 
@@ -71,7 +93,7 @@ LangChain 提供模型、消息、工具和标准 agent 构建能力；LangGraph
 
 - **学员共创**：默认一次推进一个设计问题，学员用自然语言回答。
 - **教师演示**：按明确标注的模拟案例展示全过程。
-- **代码实践**：在已确定设计基础上，逐结构生成和解释 Python 代码；需要时带领本地运行。
+- **代码实践**：当前结构明确后，当场生成、展示和分块讲解对应 Python 代码；需要时带领本地运行，不等待全部设计结束。
 
 | 需求 | 示例指令 |
 | --- | --- |
@@ -91,6 +113,8 @@ LangChain 提供模型、消息、工具和标准 agent 构建能力；LangGraph
 
 看板提供 15 个模块卡片、当前决定、局部图、运行总图及可见轨迹回放。轨迹切换时高亮对应业务节点。看板不依赖 CDN，不调用模型，也不会把进度数据发送到外部服务。
 
+看板同时显示实际文件表、正文与源代码、每块代码的用途和输入输出、检查命令与执行证据。模板尚未填写时显示“成果待展示”；已完成设计不自动算作已完成讲解。
+
 在仓库目录生成课堂示例看板：
 
 ```bash
@@ -105,7 +129,9 @@ python scripts/render_board.py templates/teaching-state.json --output blank-boar
 
 脚本使用 Python 3 标准库，没有第三方依赖。没有 Python 时仍可用聊天中的图示上课。学员进度由 WorkBuddy 保存到项目的 `agent-design/teaching-state.json`；网页只展示已保存的数据，更新 JSON 后需要重新生成看板。
 
-示例看板只保存正常请求与缺主题请求两条**模拟轨迹**，当前显示“评估进行中”。无资料、工具失败、越界请求和完整文件交付仍需继续检查；它不是已经运行或评估通过的真实智能体。
+示例看板只保存正常请求与缺主题请求两条**模拟轨迹**。无资料、工具失败、越界请求和完整文件交付仍需继续检查；它不是已经运行或评估通过的真实智能体。
+
+1.1.0 的看板默认展开工具模块，完整展示 tools.py 与 course_catalog.json，并按导入、加载目录、查询函数和运行入口讲解。示例整体设计仍在进行中；只有独立查询函数的结果为真实本地执行，业务图轨迹仍为模拟。
 
 ## 最终设计产物
 
@@ -133,10 +159,12 @@ python scripts/render_board.py templates/teaching-state.json --output blank-boar
 │   ├── project-contract.md
 │   ├── visualization.md
 │   ├── implementation.md
+│   ├── visible-work.md
 │   └── classroom-example.md
 ├── templates/
 │   ├── teaching-state.json
-│   └── example-state.json
+│   ├── example-state.json
+│   └── course-example/          # 示例设计正文、tools.py 与课程 JSON
 ├── scripts/
 │   └── render_board.py
 ├── examples/

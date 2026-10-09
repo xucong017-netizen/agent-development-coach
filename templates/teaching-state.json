@@ -55,7 +55,9 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": []
     },
     {
       "id": "io",
@@ -117,7 +119,9 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": []
     },
     {
       "id": "model",
@@ -167,7 +171,9 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": []
     },
     {
       "id": "prompt",
@@ -229,7 +235,9 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": []
     },
     {
       "id": "tools",
@@ -291,7 +299,9 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": []
     },
     {
       "id": "knowledge",
@@ -353,7 +363,9 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": []
     },
     {
       "id": "memory",
@@ -403,7 +415,9 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": []
     },
     {
       "id": "state",
@@ -465,7 +479,9 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": []
     },
     {
       "id": "nodes",
@@ -515,7 +531,9 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": []
     },
     {
       "id": "edges",
@@ -577,7 +595,9 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": []
     },
     {
       "id": "routing",
@@ -644,7 +664,9 @@
             "label": "等待下轮"
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": []
     },
     {
       "id": "loops",
@@ -711,7 +733,9 @@
             "label": "通过或达上限"
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": []
     },
     {
       "id": "control",
@@ -773,7 +797,9 @@
             "label": "拒绝"
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": []
     },
     {
       "id": "evaluation",
@@ -835,7 +861,9 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": []
     },
     {
       "id": "delivery",
@@ -897,7 +925,9 @@
             "label": ""
           }
         ]
-      }
+      },
+      "presentation_status": "pending",
+      "artifacts": []
     }
   ],
   "agent_graph": {
@@ -910,5 +940,7 @@
   "implementation": {
     "status": "未开始",
     "verification": "尚未生成或执行代码。"
-  }
+  },
+  "teaching_version": "1.1.0",
+  "file_catalog": []
 }

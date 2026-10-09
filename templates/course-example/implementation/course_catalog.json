@@ -1,0 +1,7 @@
+{
+  "source": "课堂模拟目录 A（非真实课程）",
+  "items": [
+    {"name": "Python 入门", "topic": "Python", "level": "零基础"},
+    {"name": "表格数据分析", "topic": "Excel", "level": "入门"}
+  ]
+}
