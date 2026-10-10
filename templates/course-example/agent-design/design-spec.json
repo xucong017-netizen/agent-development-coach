@@ -404,6 +404,135 @@
           "expected": "说明只能提供课程咨询"
         }
       ]
+    },
+    "structure_bindings": {
+      "model": {
+        "kind": "configuration",
+        "nodes": [
+          "answer"
+        ],
+        "controls": [
+          "框架模式执行真实 LangGraph，使用明确标注的模拟回答；真实模型只在配置密钥并选择 real 后调用。"
+        ],
+        "basis": "课堂项目模型节点类型与实际模型/提示词设计决定"
+      },
+      "prompt": {
+        "kind": "configuration",
+        "nodes": [
+          "answer"
+        ],
+        "controls": [
+          "只依据课程资料回答；说明资料不足；不编造价格和效果；不付款报名。"
+        ],
+        "basis": "课堂项目模型节点类型与实际模型/提示词设计决定"
+      },
+      "knowledge": {
+        "kind": "configuration",
+        "nodes": [
+          "search"
+        ],
+        "controls": [
+          "采用课堂目录普通查询；当前不采用向量库。目录由机构更新，回答引用目录编号。"
+        ],
+        "basis": "课堂工具实际查询课程目录，查询节点负责资料检索"
+      },
+      "goal": {
+        "kind": "global",
+        "nodes": [
+          "validate",
+          "outside"
+        ],
+        "controls": [
+          "帮助学员查询和推荐课程；不替学员报名、不承诺课程效果。成功结果含课程、理由、出处。"
+        ],
+        "basis": "课堂边界由输入检查及越界回应实现"
+      },
+      "memory": {
+        "kind": "not-used",
+        "nodes": [],
+        "controls": [
+          "不采用业务记忆：本课一次输入一次回答。未来多轮咨询再加入会话笔记。课堂学习进度仍保存。"
+        ],
+        "summary": "不采用业务记忆：本课一次输入一次回答。未来多轮咨询再加入会话笔记。课堂学习进度仍保存。",
+        "basis": "课堂项目明确决定暂不采用此能力"
+      },
+      "control": {
+        "kind": "not-used",
+        "nodes": [],
+        "controls": [
+          "不采用业务持久化和人工审核：没有跨进程恢复或外部写动作。未来加入报名动作时重新设计审核。"
+        ],
+        "summary": "不采用业务持久化和人工审核：没有跨进程恢复或外部写动作。未来加入报名动作时重新设计审核。",
+        "basis": "课堂项目明确决定暂不采用此能力"
+      },
+      "loops": {
+        "kind": "not-used",
+        "nodes": [],
+        "controls": [
+          "不自动重试；查询失败直接说明错误并结束。每个请求最多查询一次，无业务循环。"
+        ],
+        "summary": "不自动重试；查询失败直接说明错误并结束。每个请求最多查询一次，无业务循环。",
+        "basis": "当前流程没有循环；查询失败结束本轮"
+      },
+      "tools": {
+        "kind": "runtime",
+        "nodes": [
+          "search"
+        ],
+        "controls": [
+          "search_courses(topic) 返回 items 与 source；无结果为 []，失败抛异常。search_catalog 捕获异常后写 error，路由到失败出口；工具只读。"
+        ],
+        "basis": "工具契约 node 指向实际调用节点；输出与异常由该节点写回状态",
+        "internal_graph": {
+          "nodes": [
+            {
+              "id": "tool_parameters",
+              "label": "检查参数：topic",
+              "x": 20,
+              "y": 40,
+              "kind": "内部动作"
+            },
+            {
+              "id": "tool_call",
+              "label": "调用 search_courses",
+              "x": 290,
+              "y": 40,
+              "kind": "函数调用"
+            },
+            {
+              "id": "tool_return",
+              "label": "结果与来源写回状态",
+              "x": 560,
+              "y": 40,
+              "kind": "成功"
+            },
+            {
+              "id": "tool_failure",
+              "label": "异常写 error，进入失败分支",
+              "x": 560,
+              "y": 180,
+              "kind": "失败"
+            }
+          ],
+          "edges": [
+            {
+              "from": "tool_parameters",
+              "to": "tool_call",
+              "label": "参数合法"
+            },
+            {
+              "from": "tool_call",
+              "to": "tool_return",
+              "label": "查询完成"
+            },
+            {
+              "from": "tool_call",
+              "to": "tool_failure",
+              "label": "调用失败"
+            }
+          ]
+        }
+      }
     }
   }
 }

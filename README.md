@@ -4,13 +4,26 @@
 
 ## 下载与使用
 
-下载 [v1.5.1 技能包](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.5.1/agent-development-coach.zip)，按 WorkBuddy 当前的技能导入方式安装。使用目录导入时选择包含 SKILL.md 的目录。已有项目继续读取原进度和代码，不用示例覆盖。
+下载 [v1.6.0 技能包](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.6.0/agent-development-coach.zip)，按 WorkBuddy 当前的技能导入方式安装。使用目录导入时选择包含 SKILL.md 的目录。已有项目继续读取原进度和代码，不用示例覆盖。
 
 首次调用：“使用 agent-development-coach，带我做一个课程咨询智能体。我没有开发经验。”
 
 继续：“使用 agent-development-coach，继续当前项目，读取看板改动和待处理需求。”
 
 普通使用只需技能包，页面和启动器已包含在里面。local-agent-workbench.zip 是可选独立调试包；agent-workbench.html 是离线成果副本，不能实时写回项目。启动脚本沿用 v1.3.0；WorkBuddy 真机安装、权限和启动集成仍由使用者测试。
+
+## v1.6.0：本步局部流程与整体结构定位
+
+- “本步局部 / 整体流程”切换，保持同一个当前步骤。局部图显示真实作用节点与一跳前后衔接；整体图保留全部流程，红色定位本步节点和受控连接。
+- 显示“这一步控制什么”“在整体中对应哪里”、本步最近业务修改、逐节点读取/写入字段和实现入口。红色表示作用范围，版本新增/更新/移除使用独立图例。
+- 内部教学图可展开，拆解参数检查、函数调用、结果与错误处理，并明确不是额外的业务运行节点。
+- 模型、提示词等配置可以共同约束一个真实模型节点；状态、验证和交付注明跨整体作用；未采用结构不虚构节点，缺少对应关系明确提示待补齐。
+- 结构映射随项目保存；修改节点、连接或契约后刷新局部与整体图。展示说明更新不改业务代码、不使原运行证据失效。旧项目在原目录继续，由 Skill 补齐 design.structure_bindings。
+
+更新后调用：“使用 agent-development-coach，继续当前项目，补齐每一步的局部流程、控制规则和整体对应关系，更新设计台。”打开自动启动器返回的地址。
+
+![本步局部流程](https://raw.githubusercontent.com/xucong017-netizen/agent-development-coach/main/docs/images/step-local.png)
+![整体中的本步定位](https://raw.githubusercontent.com/xucong017-netizen/agent-development-coach/main/docs/images/step-overall.png)
 
 ## v1.5.1：统一 15 步与双向进度同步
 
@@ -62,4 +75,6 @@
 
 ## 开发者验证
 
-项目 Python 环境安装 templates/requirements-runtime.txt 后，运行 `python -m unittest discover -s tests -v` 可执行 24 项设计、双向步骤同步、需求队列与真实框架测试。
+项目 Python 环境安装 templates/requirements-runtime.txt 后，运行 `python -m unittest discover -s tests -v` 可执行 34 项设计、局部/整体对应、双向步骤同步与真实框架测试。
+
+工作台渲染验证：安装 Node.js 后运行 `node tests/test_studio_views.js examples/agent-workbench.html`，在隔离文档中检查全部 15 个结构、局部/整体作用范围、未采用状态及历史视图分离。

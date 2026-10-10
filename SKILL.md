@@ -3,7 +3,7 @@ name: agent-development-coach
 description: 面向零开发经验学员，用中文逐步讲解、可视化展示并共同设计 LangChain 和 LangGraph 智能体；适用于从零设计、课堂演示、继续学习和按结构生成代码。
 description_zh: 零基础智能体开发教练：调用后自动启动内置教学工作台，逐结构展示实际文件、代码讲解和图示，网页编辑同步项目。
 description_en: Guide beginners through LangChain and LangGraph agent design with component explanations, live diagrams, design changes, and optional Python implementation.
-version: 1.5.1
+version: 1.6.0
 author: 用户自定义
 ---
 
@@ -120,6 +120,10 @@ python "<技能目录>/scripts/render_board.py" "<项目目录>/agent-design/tea
 用宿主实际能力打开或链接 HTML，不假定存在 Codex 专属工具、浏览器插件或联网图形服务。没有 Python 时继续用聊天图示；没有写文件能力时输出可复制的进度 JSON 和设计正文，明确说明尚未保存。
 
 每次学员要求修改设计，先设置 `current_module` 为本次结构，更新对应决定、节点职责、契约、实际图与相关文件；配置变化反映在组成视图，执行步骤变化反映在流程图，不为凑图虚构节点。同步器从真实前后设计自动生成变化记录。每次改变设计都更新 `teaching-state.json` 中的 `design`，再执行设计同步。模块决定和业务图为兼容镜像，不维护独立的相互冲突版本。工作台自动读取成果；静态看板需重新生成。学习模块图与智能体运行总图是两种不同图。学习进度独立于智能体的业务运行状态，不能混用。图编辑不会自动生成业务代码，轨迹回放不会调用模型。
+
+## 每一步的局部流程与整体定位
+
+每轮教学同时展示“本步局部”和“整体流程”，遵循 [局部与整体可视化协议](references/structure-views.md)。设计台切换范围后保留同一主步骤；整体图用红色标出实际作用节点与连接，本步局部保留前后衔接节点。更新设计时同步维护 `design.structure_bindings`，说明本步控制什么、实际节点在哪里、内部动作如何完成。配置结构关联它约束的节点，跨整体结构说明范围；明确不采用的结构使用 `kind=not-used`，不能硬画运行节点。局部教学图与真实局部运行图分别标注，代码与设计修改后再同步、读回验证。
 
 ## 完成标准
 

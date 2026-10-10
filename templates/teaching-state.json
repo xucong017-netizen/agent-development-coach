@@ -1037,7 +1037,8 @@
       "routes": {},
       "loop_limits": {},
       "tests": []
-    }
+    },
+    "structure_bindings": {}
   },
   "stages": [
     {

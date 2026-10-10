@@ -19,9 +19,10 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 from render_board import validate
+from structure_views import structure_views
 from design_engine import normalize, reconcile, derived, audit, grade, affect, fingerprint, execution_hash, design_change_hash, change_record, REGISTRY, STEP_BY_ID, progress
 
-VERSION = '1.5.1'
+VERSION = '1.6.0'
 TEXT_EXTENSIONS = {'.py', '.md', '.json', '.yaml', '.yml', '.txt', '.mmd', '.html',
                    '.css', '.js', '.ts', '.tsx', '.jsx', '.toml', '.ini', '.csv', '.bat', '.ps1'}
 EXCLUDED = {'.git', '.venv', 'venv', 'node_modules', '__pycache__', '.workbench'}
@@ -35,7 +36,7 @@ def digest(data):
 
 def bundle_fingerprint():
     root = Path(__file__).resolve().parents[1]
-    files = [root / 'scripts' / n for n in ('workbench.py', 'render_board.py', 'design_engine.py', 'run_design.py')]
+    files = [root / 'scripts' / n for n in ('workbench.py', 'render_board.py', 'design_engine.py', 'run_design.py', 'structure_views.py')]
     files += sorted((root / 'assets' / 'workbench').glob('*'))
     files.append(root / 'templates' / 'step-registry.json')
     return digest(b''.join(p.read_bytes() for p in files if p.is_file()))
@@ -136,6 +137,7 @@ class Project:
                     except ValueError:
                         continue
             return {'state': state, 'files': files, 'revision': revision, 'progress': progress(state), 'step_registry': REGISTRY,
+                    'structure_views': structure_views(state),
                     'project_name': self.root.name, 'project_path': str(self.root),
                     'server_time': datetime.now().astimezone().isoformat(), 'activity': activities,
                     'audit': audit(state, self.root),

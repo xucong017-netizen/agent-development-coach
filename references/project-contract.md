@@ -1,4 +1,4 @@
-# 项目进度与交付契约 · 1.5.1
+# 项目进度与交付契约 · 1.6.0
 
 学员数据保存在项目 agent-design/，与 Skill 安装目录分开。复用已有项目，不重置学员回答。详细执行规则见 [学习协议](learning-protocol.md)。
 
@@ -15,6 +15,8 @@ modules 保留原 15 个 ID。status 为 pending/active/done/skipped/review；de
 trace 包含 run、step、node、mode、before、input、update、after、output、basis、source、duration_ms、error。runs 保存模式、设计哈希、源文件哈希、状态、输出和错误。实施状态与设计状态分开：implementation.verification 写真实证据和限制。sync.implementation_pending 标新设计尚未应用的结构，reviews 记录实质影响。open_questions 用“阻断：”表示交付阻断，“实施待办：”表示后续选择。
 
 ## 文件与同步
+
+局部流程、整体定位与内部教学拆解按 [结构映射协议](structure-views.md) 维护；`design.structure_bindings` 是展示对应关系，不把教学图节点写进业务运行图。
 
 --sync 自动派生四个文件：design-summary.md（全部结构的当前设计）、design-contracts.md（状态/节点/工具/路由/循环/测试契约）、design-spec.json（结构化规范导出）、architecture.mmd（业务图）。所有文件均在 agent-design/。不把这些文件再当成独立编辑来源；旧手写文档保留历史并迁移，不覆盖不带生成标记的同名文件。
 
