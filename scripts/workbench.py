@@ -19,9 +19,9 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 from render_board import validate
-from design_engine import normalize, reconcile, derived, audit, grade, affect, fingerprint, execution_hash, design_change_hash, change_record
+from design_engine import normalize, reconcile, derived, audit, grade, affect, fingerprint, execution_hash, design_change_hash, change_record, REGISTRY, STEP_BY_ID, progress
 
-VERSION = '1.5.0'
+VERSION = '1.5.1'
 TEXT_EXTENSIONS = {'.py', '.md', '.json', '.yaml', '.yml', '.txt', '.mmd', '.html',
                    '.css', '.js', '.ts', '.tsx', '.jsx', '.toml', '.ini', '.csv', '.bat', '.ps1'}
 EXCLUDED = {'.git', '.venv', 'venv', 'node_modules', '__pycache__', '.workbench'}
@@ -37,6 +37,7 @@ def bundle_fingerprint():
     root = Path(__file__).resolve().parents[1]
     files = [root / 'scripts' / n for n in ('workbench.py', 'render_board.py', 'design_engine.py', 'run_design.py')]
     files += sorted((root / 'assets' / 'workbench').glob('*'))
+    files.append(root / 'templates' / 'step-registry.json')
     return digest(b''.join(p.read_bytes() for p in files if p.is_file()))
 
 
@@ -134,7 +135,7 @@ class Project:
                         activities.append(json.loads(line))
                     except ValueError:
                         continue
-            return {'state': state, 'files': files, 'revision': revision,
+            return {'state': state, 'files': files, 'revision': revision, 'progress': progress(state), 'step_registry': REGISTRY,
                     'project_name': self.root.name, 'project_path': str(self.root),
                     'server_time': datetime.now().astimezone().isoformat(), 'activity': activities,
                     'audit': audit(state, self.root),
@@ -240,6 +241,23 @@ class Project:
             self.write(self.state_path, json.dumps(state, ensure_ascii=False, indent=2), '网页保存设计或架构草稿')
             baseline.parent.mkdir(parents=True, exist_ok=True)
             baseline.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding='utf-8')
+            return self.snapshot()
+
+    def set_progress(self, body):
+        """Shared cursor only: no implicit completion or design application."""
+        with self.lock:
+            if self.snapshot()['revision'] != body.get('expected_revision'):
+                raise Conflict('当前项目已更新，请读取最新步骤后再切换。')
+            key = body.get('module')
+            if key not in STEP_BY_ID: raise ValueError('请选择统一的 15 个主步骤之一。')
+            state = self.state()
+            action = body.get('action', state.get('current_action', '') if state['current_module'] == key else '')
+            if not isinstance(action, str) or len(action) > 1000: raise ValueError('当前操作须为 1000 字以内文本。')
+            if state['current_module'] == key and state.get('current_action', '') == action: return self.snapshot()
+            state['current_module'] = key
+            state['current_action'] = action
+            state['learning_stage'] = STEP_BY_ID[key]['stage']
+            self.write(self.state_path, json.dumps(state, ensure_ascii=False, indent=2), '同步当前设计步骤')
             return self.snapshot()
 
     def design_request(self, body):
@@ -362,6 +380,8 @@ def make_server(project, assets, port):
                     snapshot = project.save_state(body)
                 elif self.path == '/api/exercise':
                     snapshot = project.exercise(body)
+                elif self.path == '/api/progress':
+                    snapshot = project.set_progress(body)
                 elif self.path == '/api/design-request':
                     snapshot = project.design_request(body)
                 elif self.path == '/api/run':

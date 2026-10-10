@@ -1,0 +1,140 @@
+{
+  "total": 15,
+  "steps": [
+    {
+      "id": "goal",
+      "number": 1,
+      "title": "任务边界",
+      "stage": "define"
+    },
+    {
+      "id": "io",
+      "number": 2,
+      "title": "输入与输出",
+      "stage": "define"
+    },
+    {
+      "id": "model",
+      "number": 3,
+      "title": "模型",
+      "stage": "minimum"
+    },
+    {
+      "id": "prompt",
+      "number": 4,
+      "title": "提示词",
+      "stage": "minimum"
+    },
+    {
+      "id": "tools",
+      "number": 5,
+      "title": "工具",
+      "stage": "expand"
+    },
+    {
+      "id": "knowledge",
+      "number": 6,
+      "title": "知识与检索",
+      "stage": "expand"
+    },
+    {
+      "id": "memory",
+      "number": 7,
+      "title": "记忆",
+      "stage": "expand"
+    },
+    {
+      "id": "state",
+      "number": 8,
+      "title": "运行状态",
+      "stage": "expand"
+    },
+    {
+      "id": "nodes",
+      "number": 9,
+      "title": "处理节点",
+      "stage": "expand"
+    },
+    {
+      "id": "edges",
+      "number": 10,
+      "title": "流程连接",
+      "stage": "expand"
+    },
+    {
+      "id": "routing",
+      "number": 11,
+      "title": "条件分支",
+      "stage": "expand"
+    },
+    {
+      "id": "loops",
+      "number": 12,
+      "title": "循环与重试",
+      "stage": "expand"
+    },
+    {
+      "id": "control",
+      "number": 13,
+      "title": "人工介入",
+      "stage": "expand"
+    },
+    {
+      "id": "evaluation",
+      "number": 14,
+      "title": "运行验证",
+      "stage": "deliver"
+    },
+    {
+      "id": "delivery",
+      "number": 15,
+      "title": "交付",
+      "stage": "deliver"
+    }
+  ],
+  "stages": [
+    {
+      "id": "define",
+      "title": "定义任务",
+      "modules": [
+        "goal",
+        "io"
+      ],
+      "result": "明确任务边界、输入与输出"
+    },
+    {
+      "id": "minimum",
+      "title": "最小闭环",
+      "modules": [
+        "model",
+        "prompt"
+      ],
+      "result": "模型与提示词阶段做最小输入到输出实验；状态、节点和连线先作必要预览，之后按正式步骤深入设计"
+    },
+    {
+      "id": "expand",
+      "title": "扩展能力",
+      "modules": [
+        "tools",
+        "knowledge",
+        "memory",
+        "state",
+        "nodes",
+        "edges",
+        "routing",
+        "loops",
+        "control"
+      ],
+      "result": "按 05–13 的固定主步骤逐项确定能力与执行结构，不采用的能力说明理由"
+    },
+    {
+      "id": "deliver",
+      "title": "验收交付",
+      "modules": [
+        "evaluation",
+        "delivery"
+      ],
+      "result": "检查实际成果、业务路径和运行证据，交付完整设计"
+    }
+  ]
+}

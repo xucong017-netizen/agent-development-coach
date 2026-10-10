@@ -53,7 +53,7 @@ implementation/
 
 保持 `schema_version=1`，新增字段向后兼容：
 
-- `teaching_version`：`1.5.0`。
+- `teaching_version`：`1.5.1`。
 - `file_catalog`：实际文件表，条目 `{path,purpose,kind,status,caller}`。path 为项目相对路径。status 为新增/修改/已有/计划未创建/未落盘。
 - 模块 `presentation_status`：`pending` 待展示、`shown` 已完整展示、`review` 变更需重讲。初始 pending；实际完成展示后设 shown。
 - 模块 `artifacts`：具体产物数组，每条 `{path,purpose,kind,change,content,content_scope,explanations,verification}`。

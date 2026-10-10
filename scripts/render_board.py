@@ -5,7 +5,11 @@ import html
 import json
 import math
 import re
+import sys
 from pathlib import Path
+
+# Support loading this standalone renderer by file path as well as CLI execution.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 STATUSES = {'pending': '待填写', 'active': '进行中', 'done': '已完成',
             'skipped': '本次不采用', 'review': '需复核'}
@@ -206,6 +210,8 @@ def svg(graph, prefix):
 
 
 def render(data):
+    from design_engine import normalize
+    data = normalize(data)
     validate(data)
     modules = data['modules']
     finished = sum(m['status'] in ('done', 'skipped') for m in modules)

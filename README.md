@@ -4,13 +4,20 @@
 
 ## 下载与使用
 
-下载 [v1.5.0 技能包](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.5.0/agent-development-coach.zip)，按 WorkBuddy 当前的技能导入方式安装。使用目录导入时选择包含 SKILL.md 的目录。已有项目继续读取原进度和代码，不用示例覆盖。
+下载 [v1.5.1 技能包](https://github.com/xucong017-netizen/agent-development-coach/releases/download/v1.5.1/agent-development-coach.zip)，按 WorkBuddy 当前的技能导入方式安装。使用目录导入时选择包含 SKILL.md 的目录。已有项目继续读取原进度和代码，不用示例覆盖。
 
 首次调用：“使用 agent-development-coach，带我做一个课程咨询智能体。我没有开发经验。”
 
 继续：“使用 agent-development-coach，继续当前项目，读取看板改动和待处理需求。”
 
 普通使用只需技能包，页面和启动器已包含在里面。local-agent-workbench.zip 是可选独立调试包；agent-workbench.html 是离线成果副本，不能实时写回项目。启动脚本沿用 v1.3.0；WorkBuddy 真机安装、权限和启动集成仍由使用者测试。
+
+## v1.5.1：统一 15 步与双向进度同步
+
+- 聊天、设计台、教学模板共同使用 templates/step-registry.json 的 15 个编号、名称和顺序。安装、创建文件、调试等是步骤内操作，不另计主步骤。
+- 聊天讲解前先同步当前步骤和具体操作；设计台点击结构、阶段或前后步骤会写回同一份项目进度。网页约每 2.5 秒读取更新，WorkBuddy 在下一轮调用时读取网页选择。
+- 顶部和任务卡显示“第 XX/15 步 · 统一名称”，阶段由步骤自动派生。切换不自动标完成；未保存草稿阻止在线切换，版本冲突保留原成果。
+- 旧项目保留设计、代码和历史，按固定 ID 整理名称与顺序。更新后调用：“使用 agent-development-coach，继续当前项目，迁移到统一 15 步并同步设计台。”打开自动启动器返回的地址，避免继续使用旧服务页面。
 
 ## v1.5.0：围绕设计任务重新设计看板
 
@@ -55,4 +62,4 @@
 
 ## 开发者验证
 
-项目 Python 环境安装 templates/requirements-runtime.txt 后，运行 `python -m unittest discover -s tests -v` 可执行 16 项设计、同步、需求队列与真实框架测试。
+项目 Python 环境安装 templates/requirements-runtime.txt 后，运行 `python -m unittest discover -s tests -v` 可执行 24 项设计、双向步骤同步、需求队列与真实框架测试。

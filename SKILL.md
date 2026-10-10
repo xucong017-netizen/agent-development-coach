@@ -3,7 +3,7 @@ name: agent-development-coach
 description: 面向零开发经验学员，用中文逐步讲解、可视化展示并共同设计 LangChain 和 LangGraph 智能体；适用于从零设计、课堂演示、继续学习和按结构生成代码。
 description_zh: 零基础智能体开发教练：调用后自动启动内置教学工作台，逐结构展示实际文件、代码讲解和图示，网页编辑同步项目。
 description_en: Guide beginners through LangChain and LangGraph agent design with component explanations, live diagrams, design changes, and optional Python implementation.
-version: 1.5.0
+version: 1.5.1
 author: 用户自定义
 ---
 
@@ -29,6 +29,38 @@ python "<技能目录>/scripts/start_workbench.py" --project "<学员项目目�
 4. 只在用户尚未给出场景时，用“课程咨询助手”作为明确标注的暂定案例。演示资料和运行结果必须注明模拟；不能替用户确认需求。
 5. 读取 [课程模块](references/curriculum.md) 当前模块；不要一次把整份课程灌输给学员。读取 [项目与交付格式](references/project-contract.md) 初始化进度，复制 [进度模板](templates/teaching-state.json) 到学员项目中，保留技能包自身文件。
 6. 按 [内置工作台运行约定](references/workbench.md) 保持本地同步。每轮开始用自动启动器加 `--no-open` 检查服务，断线则自动恢复；无需重复打开健康的网页。重读网页可能修改的内容，每步写回实际文件、讲解记录与图。工作台与聊天共同展示实际设计变化，按 [设计台交互协议](references/ui-workflow.md) 处理看板需求。每轮先检查 `design_requests` 中的待处理需求，再进行新设计。
+
+## 聊天与设计台共用的 15 个主步骤
+
+主步骤编号、名称、顺序和阶段由 [唯一步骤表](templates/step-registry.json) 定义。下表从该文件生成，聊天标题和设计台必须逐字一致。默认按 01→15 推进；用户明确跳转或修改时按同一 ID 切换，不另起一套编号。环境安装、文件创建、调试、最小闭环实验是所属主步骤中的操作，不能算成第 16 步或改称另一个主步骤。四阶段只是归组，不能作为另一份步骤数量。
+
+| 主步骤 | 统一名称 | ID |
+| --- | --- | --- |
+| 01/15 | 任务边界 | `goal` |
+| 02/15 | 输入与输出 | `io` |
+| 03/15 | 模型 | `model` |
+| 04/15 | 提示词 | `prompt` |
+| 05/15 | 工具 | `tools` |
+| 06/15 | 知识与检索 | `knowledge` |
+| 07/15 | 记忆 | `memory` |
+| 08/15 | 运行状态 | `state` |
+| 09/15 | 处理节点 | `nodes` |
+| 10/15 | 流程连接 | `edges` |
+| 11/15 | 条件分支 | `routing` |
+| 12/15 | 循环与重试 | `loops` |
+| 13/15 | 人工介入 | `control` |
+| 14/15 | 运行验证 | `evaluation` |
+| 15/15 | 交付 | `delivery` |
+
+每轮先重读项目和 `--progress`，不能从聊天记忆推断当前步骤。解释新步骤或开始本步操作前执行：
+
+```text
+python "<技能目录>/scripts/design_engine.py" --project "<项目>" --set-step tools --action "确定查询参数和失败返回" --sync --progress
+```
+
+用本轮实际模块 ID 与操作替换例子。命令成功后，用返回的 label 作聊天标题，例如“第 05/15 步 · 工具”；在标题下说明当前具体操作。先写入并同步，再讲解，不等本轮结束才更新看板。产生文件、代码、图或决定后再次 --sync；“继续”先读取共享步骤，确认实际成果已展示，按唯一步骤表选下一个 ID 并同步。切换步骤不自动标完成。
+
+网页侧选择结构、阶段或前后步骤会写回同一个 current_module；下一轮聊天必须读取该值。网页有未保存草稿时先保留并处理冲突，不能覆盖它。服务没有启动、同步失败或项目目录不一致时，说明实际未同步状态，不宣称聊天与看板一致。沿用现有自动启动器返回的 project_path 与 URL，不创建第二个项目来继续同一课。
 
 ## 四阶段路线与执行协议
 
