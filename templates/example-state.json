@@ -1962,7 +1962,7 @@
     "status": "示例已执行真实框架，模型为模拟",
     "verification": "Python 与空主题已实际执行，节点前后状态与代码位置见轨迹。完整六类场景见发布测试记录；真实模型未测试。"
   },
-  "teaching_version": "1.5.1",
+  "teaching_version": "1.6.0",
   "file_catalog": [
     {
       "path": "agent-design/agent-design.md",

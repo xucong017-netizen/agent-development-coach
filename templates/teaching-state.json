@@ -999,7 +999,7 @@
     "status": "未开始",
     "verification": "尚未生成或执行代码。"
   },
-  "teaching_version": "1.5.1",
+  "teaching_version": "1.6.0",
   "file_catalog": [],
   "design": {
     "version": 1,

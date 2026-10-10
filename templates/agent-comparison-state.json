@@ -1610,7 +1610,7 @@
     "status": "已提供可运行框架示例，待课堂实测",
     "verification": "图中节点均绑定项目实际函数；模拟、框架和真实模型证据分开。"
   },
-  "teaching_version": "1.5.1",
+  "teaching_version": "1.6.0",
   "file_catalog": [
     {
       "path": "agent-design/agent-design.md",
